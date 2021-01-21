@@ -1,6 +1,7 @@
 #
 LIBS=../vex.a
 OBJECTS=v.o
+OBJECTSU=u.o
 CC=gcc
 
 ifeq ($(FC),f77)
@@ -18,8 +19,10 @@ else
 endif
 
 
-all: v t
+all: v t u
 
+u: $(OBJECTSU) $(LIBS)
+	gcc -o u $(OBJECTSU) $(LIBS) -lfl
 v: $(OBJECTS) $(LIBS)
 	gcc -o v $(OBJECTS) $(LIBS) -lfl
 t: t.o gfields.o $(LIBS)
