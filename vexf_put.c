@@ -875,6 +875,61 @@ char **str5;
 /* ----------------------------------------------------------------------- */
 void
 #ifdef F2C
+fcreate_antenna_motion2__
+#else
+fcreate_antenna_motion2
+#endif
+(str, str2, str3, str4, str5, str6, str7)
+char **str;
+char **str2;
+char **str3;
+char **str4;
+char **str5;
+char **str6;
+char **str7;
+/*<      subroutine fcreate_antenna_motion(ptr_ch(str)//(char *)0, >*/
+/*<                                    ptr_ch(str2)//(char *)0, >*/
+/*<                                    ptr_ch(str3)//(char *)0, >*/
+/*<                                    ptr_ch(str4)//(char *)0, >*/
+/*<                                    ptr_ch(str5)//(char *)0, >*/
+/*<                                    ptr_ch(str6)//(char *)0, >*/
+/*<                                    ptr_ch(str7)//(char *)0) >*/
+/*<      implicit none >*/
+/*<      character*(*) str; >*/
+/*<      character*(*) str2; >*/
+/*<      character*(*) str3; >*/
+/*<      character*(*) str4 >*/
+/*<      character*(*) str5; >*/
+/*<      character*(*) str6; >*/
+/*<      character*(*) str7; >*/
+
+/* ... */
+
+/* input: */
+/*   character*(*) str       - string 1 */
+/*   character*(*) str2      - string 2 */
+/*   character*(*) str3      - string 3 */
+/*   character*(*) str4      - string 4 */
+/*   character*(*) str5      - string 5 */
+/*   character*(*) str6      - string 6 */
+/*   character*(*) str7      - string 7 */
+
+/* output: */
+/*   VEX format */
+/* */
+{
+  create_antenna_motion2(*str,
+			*str2,
+			*str3,
+			*str4,
+			*str5,
+			*str6,
+			*str7);
+  return;
+}
+/* ----------------------------------------------------------------------- */
+void
+#ifdef F2C
 fcreate_pointing_sector__
 #else
 fcreate_pointing_sector

@@ -780,7 +780,44 @@ create_antenna_motion(char *str, char *str2, char *str3, char *str4,
       qref_list = add_list(qref_list,make_lowl(T_ANTENNA_MOTION,
 				     make_antenna_motion(motion_type,
 				     make_dvalue(slew_value,slew_units),
-				     make_dvalue(settle_value,settle_units))));
+				     make_dvalue(settle_value,settle_units),
+				     make_dvalue(NULL,NULL))));
+  }
+
+}
+void *
+create_antenna_motion2(char *str, char *str2, char *str3, char *str4,
+	      char *str5, char *str6, char *str7)
+{
+  char *motion_type;
+  char *slew_value,*slew_units;
+  char *settle_value,*settle_units;
+  char *acceleration_value,*acceleration_units;
+
+
+  if(str==NULL || strlen(str)==0 ||
+     str2==NULL || strlen(str2)==0 ||
+     str3==NULL || strlen(str3)==0 ||
+     str4==NULL || strlen(str4)==0 ||
+     str5==NULL || strlen(str5)==0)
+    {
+      printf("%s \'antenna_motion\' %s %s block\n",
+	     err1, err2, int2block(blk));
+    }
+  else
+    {
+      motion_type=(char *)strdup(str);
+      slew_value=(char *)strdup(str2);
+      slew_units=(char *)strdup(str3);
+      settle_value=(char *)strdup(str4);
+      settle_units=(char *)strdup(str5);
+      acceleration_value=(char *)strdup(str6);
+      acceleration_units=(char *)strdup(str7);
+      qref_list = add_list(qref_list,make_lowl(T_ANTENNA_MOTION,
+				     make_antenna_motion(motion_type,
+				     make_dvalue(slew_value,slew_units),
+				     make_dvalue(settle_value,settle_units),
+				     make_dvalue(acceleration_value,acceleration_units))));
   }
 
 }  

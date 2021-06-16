@@ -677,6 +677,7 @@ $ANTENNA; *antenna parameters
 *                   type   slew     settle
     antenna_motion = az : 90 deg/min : 2 sec;
     antenna_motion = el : 30 deg/min : 1 sec;
+    antenna_motion = al : 10 deg/min : 3 sec : 4 deg/sec^2;
 *                   Sector  Axis   LoLimit  HiLimit  Axis  LoLimit HiLimit
 *                     ID
     pointing_sector = &ccw : az : -90 deg : 90 deg : el : 0 deg : 88 deg : ccw; *ccw cable wrap zone

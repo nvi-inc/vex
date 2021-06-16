@@ -735,7 +735,12 @@ axis_offset:	T_AXIS_OFFSET '=' unit_value ';'	{$$=$3;}
 antenna_motion:	T_ANTENNA_MOTION '=' T_NAME ':'
 		unit_value ':'
 		unit_value ';'
-		{$$=make_antenna_motion($3,$5,$7);}
+		{$$=make_antenna_motion($3,$5,$7,NULL);}
+		| T_ANTENNA_MOTION '=' T_NAME ':'
+		unit_value ':'
+		unit_value ':'
+		unit_value ';'
+		{$$=make_antenna_motion($3,$5,$7,$9);}
 ;
 pointing_sector:	T_POINTING_SECTOR '=' T_LINK ':'
 			T_NAME ':'

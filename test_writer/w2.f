@@ -128,6 +128,25 @@ c
      &                       ptr_ch('cw'//char(0)))
       call fcreate_nasmyth(ptr_ch('X'//char(0)),
      &                       ptr_ch('left'//char(0)))
+      call fcreate_antenna_motion2(ptr_ch('az'//char(0)),
+     &                       ptr_ch('1'//char(0)),
+     &                       ptr_ch('deg/sec'//char(0)),
+     &                       ptr_ch('5'//char(0)),
+     &                       ptr_ch('sec'//char(0)),
+     &                       ptr_ch('.25'//char(0)),
+     &                       ptr_ch('deg/sec^2'//char(0)))
+      call fcreate_antenna_motion2(ptr_ch('el'//char(0)),
+     &                       ptr_ch('2'//char(0)),
+     &                       ptr_ch('deg/sec'//char(0)),
+     &                       ptr_ch('15'//char(0)),
+     &                       ptr_ch('sec'//char(0)),
+     &                       ptr_ch(char(0)),
+     &                       ptr_ch(char(0)))
+      call fcreate_antenna_motion(ptr_ch('ae'//char(0)),
+     &                       ptr_ch('3'//char(0)),
+     &                       ptr_ch('deg/sec'//char(0)),
+     &                       ptr_ch('25'//char(0)),
+     &                       ptr_ch('sec'//char(0)))
       
       call fend_def
       call fcreate_block(ptr_ch('BITSTREAMS'//char(0)))

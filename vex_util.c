@@ -714,13 +714,16 @@ struct axis_type *make_axis_type(char *axis1, char *axis2,
 }
 
 struct antenna_motion *make_antenna_motion(char *axis,struct dvalue *rate,
-					   struct dvalue *offset)
+					   struct dvalue *offset,
+					   struct dvalue *acceleration)
 {
   NEWSTRUCT(new,antenna_motion);
 
   new->axis=axis;
   new->rate=rate;
   new->offset=offset;
+  new->acceleration=acceleration;
+
 
   return new;
 }
@@ -2079,6 +2082,13 @@ get_antenna_motion_field(Antenna_motion *antenna_motion,int n,int *link,
   case 3:
     *value=antenna_motion->offset->value;
     *units=antenna_motion->offset->units;
+    *name=0;
+    break;
+  case 4:
+    if(antenna_motion->acceleration==NULL||antenna_motion->acceleration->value == NULL)
+        return -1;
+    *value=antenna_motion->acceleration->value;
+    *units=antenna_motion->acceleration->units;
     *name=0;
     break;
   default:

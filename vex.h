@@ -162,6 +162,7 @@ struct antenna_motion {
   char *axis;
   struct dvalue *rate;
   struct dvalue *offset;
+  struct dvalue *acceleration;
 };
 
 typedef struct antenna_motion Antenna_motion;
@@ -658,7 +659,8 @@ struct pointing_offset  *make_pointing_offset(char *key,
 struct axis_type *make_axis_type(char *axis1, char *axis2,
 				 struct dvalue *orientation);
 struct antenna_motion *make_antenna_motion(char *axis,struct dvalue *rate,
-					   struct dvalue *offset); 
+					   struct dvalue *offset,
+					   struct dvalue *acceleration);
 struct pointing_sector *make_pointing_sector(char *sector, char *axis1,
 					     struct dvalue *lolimit1,
 					     struct dvalue *hilimit1,
@@ -1118,6 +1120,10 @@ create_axis_offset(char *str, char *str2);
 void *
 create_antenna_motion(char *str, char *str2, char *str3, char *str4,
 		       char *str5);
+
+void *
+create_antenna_motion2(char *str, char *str2, char *str3, char *str4,
+		       char *str5, char *str6, char *str7);
 
 void *
 create_pointing_sector(char *str, char *str2, char *str3, char *str4,
