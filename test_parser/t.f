@@ -97,14 +97,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -121,14 +121,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -144,14 +144,14 @@ C
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -168,14 +168,14 @@ C
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -192,14 +192,14 @@ C
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -216,14 +216,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -240,14 +240,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -268,14 +268,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -292,7 +292,7 @@ c
                ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
                write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-               if(fvex_len(buffer).gt.0)
+               if(ierr.eq.0)
      &            write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      &           "' len=",fvex_len(buffer)
             enddo
@@ -312,14 +312,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -343,14 +343,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
@@ -367,7 +367,7 @@ c
       ierr=fvex_scan_source(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_scan_source=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
       enddo
@@ -380,7 +380,7 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0) then
+      if(ierr.eq.0) then
       write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
@@ -396,7 +396,7 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0) then
+      if(ierr.eq.0) then
       write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
@@ -414,14 +414,14 @@ c
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
       write(6,*) "i=",i," ierr from fvex_field=",ierr
 
-      if(fvex_len(buffer).gt.0)
+      if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
 
       ierr=fvex_units(ptr_ch(units),len(units))
       write(6,*) "i=",i," ierr from fvex_units=",ierr
 
-      if(fvex_len(units).gt.0) then
+      if(ierr.eq.0) then
          write(6,*) "units='",units(1:fvex_len(units)),
      &        "' len=",fvex_len(units)
          ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
