@@ -550,7 +550,8 @@ integer *start_len, *mode_len, *scanid_len, *vex;
 /*   using fvex_field. */
 
 /* When this routine does not return an error, the sources can be accessed */
-/*   using fvex_scan_source. */
+/*   using fvex_scan_source for VEX1. */
+/*   or fvex_scan_source2 for VEX1 and VEX2. */
 
 /*  input: */
 /*   character*(*) station     - the station to reurn statements for */
@@ -629,7 +630,8 @@ integer *start_len, *mode_len, *scanid_len, *vex;
 /*   using fvex_field. */
 
 /* When this routine does not return an error, the sources can be accessed */
-/*   using fvex_scan_source. */
+/*   using fvex_scan_source for VEX1. */
+/*   or fvex_scan_source2 for VEX1 and VEX2. */
 
 /*  input: */
 /*   character*(*) station     - the station to reurn statements for */
@@ -705,7 +707,8 @@ integer *start_len, *mode_len, *scanid_len,*vex;
 /*   find the station statements for this scan. */
 
 /* When this routine does not return an error, the source names can be */
-/*   accessed using fvex_scan_source. */
+/*   using fvex_scan_source for VEX1. */
+/*   or fvex_scan_source2 for VEX1 and VEX2. */
 
 /*  input: */
 /*   integer vex               - vex file reference */
@@ -1140,6 +1143,51 @@ integer *units_len;
 
   return 0;
 }
+/* ----------------------------------------------------------------------- */
+integer
+#ifdef F2C
+fvex_scan_source2__
+#else
+fvex_scan_source2
+#endif
+(n)
+integer *n;
+/*<       integer function fvex_scan_source2(n) >*/
+/*<       implicit none >*/
+/*<       integer n >*/
+
+/* Returns a source from a station scan using the */
+/*    get_scan_scan_source2() routine. */
+
+/* input: */
+/*   integer n                - source parameter to return */
+
+/* output: */
+/*   integer (return value)    - error code, zero indicates no error */
+/*                               -6 = n out of range */
+
+/* When this routine does not return an error, the fields can be accessed */
+/*   using fvex_field. */
+
+{
+  int i, ierr;
+  char *ptr;
+
+  if (*n < 1)
+    return -6;
+
+  save_type=T_SOURCE;
+  save_ptr=get_scan_source2(save_lowls);
+  for (i=1;i < *n && ptr!= NULL;i++)
+    save_ptr=get_scan_source_next2();
+
+  if(save_ptr==NULL)
+    return -6;
+
+  return 0;
+
+}
+
 /* ----------------------------------------------------------------------- */
 integer
 #ifdef F2C

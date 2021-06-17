@@ -947,6 +947,12 @@ void *
 get_scan_source(Llist *lowls_scan_in);
 
 void *
+get_scan_source_next2();
+
+void *
+get_scan_source2(Llist *lowls_scan_in);
+
+void *
 get_scan_station_next(Llist **lowls_scan, char **scanid);
 
 void *

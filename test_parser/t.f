@@ -20,7 +20,7 @@
       program t
       implicit none
       character*129 buffer,mode,units,scanid
-      integer ierr,vex,lenn,i, iarray(4),int
+      integer ierr,vex,lenn,i, iarray(4),int,j
       double precision double, seconds
 c
       integer ptr_ch,fvex_open,fvex_len,fvex_field,fvex_units
@@ -29,6 +29,7 @@ c
       integer fget_global_lowl,fget_source_lowl,fget_scan_station
       integer fvex_scan_source
       integer fvex_double,fvex_date,fvex_int,fvex_ra,fvex_dec
+      integer fvex_scan_source2
 c
       ierr=fvex_open(ptr_ch("wh2"//char(0)),vex)
 
@@ -282,6 +283,22 @@ c
       endif
 
       enddo
+
+      do j=1,3
+         ierr=fvex_scan_source2(j)
+         WRITE(6,*) ' IERR FROM FVEX_SCAN_SOURCE2=',IERr
+         if(ierr.eq.0) then
+            do i=1,4
+               ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+               write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+               if(fvex_len(buffer).gt.0)
+     &            write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &           "' len=",fvex_len(buffer)
+            enddo
+         endif
+      enddo
+
 c
       ierr=fget_scan_station(ptr_ch(buffer),len(buffer),
      &     ptr_ch(mode),len(mode),ptr_ch(scanid),len(scanid),

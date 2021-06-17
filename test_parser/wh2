@@ -629,7 +629,8 @@ $SCHED; *schedule block
   scan 263-062000;
     start = 1995y263d06h20m00s;
     mode = SX;
-    source = HD123456 : 1 : 1;
+    source = HD123456 : 1 : 0;
+    source = OJ2867 : 0 : 1;
     station = HS : 20 sec : 120 sec : 0 ft : : &n : 1;
     station = JB : 0 sec : 150 sec : 0 ft : : : 1;
   endscan;
@@ -643,7 +644,8 @@ $SCHED; *schedule block
   scan 263-063500;
     start = 1995y263d06h35m00s;
     mode = SX;
-    source = 3C123 : 1;
+    source = oj287 : 1 : 0;
+    source = 3C123 : 0 : 1;
     station = HS : 20 sec : 300 sec : 1500 ft : : &ccw : 1;
     station = JB : 0 sec : 300 sec : 1700 ft : : : 1;
   endscan;
