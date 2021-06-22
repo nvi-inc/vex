@@ -80,6 +80,67 @@ integer *vex;
 /* ----------------------------------------------------------------------- */
 integer
 #ifdef F2C
+fget_vex_rev__
+#else
+fget_vex_rev
+#endif
+(version, version_len, vex)
+char **version;
+integer *version_len, *vex;
+/*<       integer function fget_vex_rev(ptr_ch(version),len(version), >*/
+/*<                                         vex) >*/
+/*<       implicit none >*/
+/*<       character*(*) version >*/
+/*<       integer vex >*/
+
+/* returns the VX_rev string of the vex file */
+
+/* input: */
+/*   integer vex             - vex file reference */
+
+/* output: */
+/*   character*(*) version   - VEX_rev string */
+/*                             use fvex_len to determine useful length */
+/*                             should be at least 1 byte longer than */
+/*                             longest expected to value to accomodate */
+/*                             null termination */
+
+/*   integer (return value)  - error code, zero indicates no error */
+/*                             otherwise errors determined by bits, if */
+/*                             bit is on the error occurred, bits are */
+/*                             numbered from 0 and correspond to */
+/*                             the value of the corresponding power of 2, */
+/*                             e.g. bit 0 is decimal 1 */
+/*                          bit 0 - VEX_rev  did not fit in version */
+/*                          bit 1 - *vex was NULL */
+{
+  char *ptr;
+  integer len, clen;
+
+  if(*vex!=0)
+    ptr=get_vex_rev((struct vex *)*vex);
+  else
+    return 2;
+
+  if(ptr==NULL) {
+    if(*version_len>0)
+      *version[0]='\0';
+    return 0;
+  }
+
+  len=strlen(ptr)+1;
+  clen=len > *version_len ? *version_len : len;
+  memcpy(*version,ptr,clen);
+
+  if((len-1)>*version_len)
+    return 1;
+
+  return 0;
+
+}
+/* ----------------------------------------------------------------------- */
+integer
+#ifdef F2C
 fget_station_def__
 #else
 fget_station_def

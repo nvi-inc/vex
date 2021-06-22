@@ -828,6 +828,9 @@ void print_comment(char *comment);
 void print_comment_trailing(char *comment_trailing);
 
 char *
+get_vex_rev(struct vex *vex_in);
+
+char *
 get_source_def_next();
 
 char *

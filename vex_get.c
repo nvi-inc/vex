@@ -28,7 +28,6 @@
 
 extern FILE * yyin;
 extern struct vex *vex_ptr;
-extern struct vex_version vex_version;
 
 /*---------------------------------------------------------------------------*/
 int vex_open(char *name, struct vex **vex)
@@ -43,6 +42,19 @@ int vex_open(char *name, struct vex **vex)
   *vex=vex_ptr;
   fclose(yyin);
   return 0;
+}
+/*---------------------------------------------------------------------------*/
+char *
+get_vex_rev(struct vex *vex)
+{
+  Llist *lowls;
+
+  lowls=vex->version;
+  lowls=find_lowl(lowls,T_VEX_REV);
+  if(lowls==NULL)
+    return NULL;
+
+  return ((Lowl *)lowls->ptr)->item;
 }
 /*---------------------------------------------------------------------------*/
 void *

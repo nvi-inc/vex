@@ -29,12 +29,24 @@ c
       integer fget_global_lowl,fget_source_lowl,fget_scan_station
       integer fvex_scan_source
       integer fvex_double,fvex_date,fvex_int,fvex_ra,fvex_dec
-      integer fvex_scan_source2
+      integer fvex_scan_source2, fget_vex_rev
 c
       ierr=fvex_open(ptr_ch("wh2"//char(0)),vex)
 
       write(6,*) "ierr from fvex_open=",ierr," vex=",vex
 
+      ierr=fget_vex_rev(ptr_ch(buffer),len(buffer),vex)
+      write(6,*) "ierr from fget_vex_rev=",ierr
+      if(ierr.eq.0)
+     &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+c
+      if(ierr.eq.0) then
+         lenn=fvex_len(buffer)
+         write(6,*)"fvex_len(buffer)=",lenn
+      endif
+c
       ierr=fget_station_def(ptr_ch(buffer),len(buffer),vex)
       write(6,*) "ierr from fget_station_def=",ierr
 c
