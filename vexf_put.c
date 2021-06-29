@@ -466,6 +466,32 @@ char **str3;
 /* ----------------------------------------------------------------------- */
 void
 #ifdef F2C
+fcreate_source_stations2__
+#else
+fcreate_source_stations2
+#endif
+(str)
+char **str;
+/*<      subroutine fcreate_source_stations2(ptr_ch(str)//(char *)0) >*/
+/*<      implicit none >*/
+/*<      character*(*) str; >*/
+
+/* ... */
+
+/* input: */
+/*   character*(*) str       - string */
+
+/* output: */
+/*   VEX format */
+/* */
+{
+
+  create_source_stations2(*str);
+  return;
+}
+/* ----------------------------------------------------------------------- */
+void
+#ifdef F2C
 fcreate_station__
 #else
 fcreate_station

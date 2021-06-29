@@ -33,7 +33,7 @@ extern struct vex_version vex_version;
 
 static int blk=0;
 static char *def_str;
-static char *string[20];         /* string saves strings while a q_list */
+static void *string[20];         /* string saves strings while a q_list */
 static char *scan_str;           /* or other list is being built. */
 static int block_flag = 0;
 static int def_flag = 0;
@@ -482,20 +482,39 @@ create_source2(char *str, char *str2, char *str3)
     }
   else
     {
-      s1=(char *)strdup(str);
+      string[0]=(char *)strdup(str);
       if(str2==NULL || strlen(str2)==0)
-        s2=NULL;
+        string[1]=NULL;
       else
-        s2=make_dvalue(str2,NULL);
+        string[1]=make_dvalue(str2,NULL);
       if(str3==NULL || strlen(str3)==0)
-        s3=NULL;
+        string[2]=NULL;
       else
-        s3=make_dvalue(str3,NULL);
+        string[2]=make_dvalue(str3,NULL);
+    }
+}
+/*-------------------------------------------------------------------*/
+void *
+create_source_stations2(char *str)
+{
+  void *s1, *s2, *s3, *s4;
+
+  if(str!=NULL && strlen(str)!=0)
+    {
+      s1=(char *)strdup(str);
+      q_list = add_list(q_list,s1);
+    }
+  else
+    {
+      s2=string[0];
+      s3=string[1];
+      s4=string[2];
       qref_list = add_list(qref_list,
 			   make_lowl(T_SOURCE,
-				     make_source(s1,s2,s3)));
+				     make_source(s2,s3,s4,q_list)));
+	  q_list=NULL;
     }
-}  
+}
 /*-------------------------------------------------------------------*/
 void *
 create_station(char *str, char *str2, char *str3, char *str4,

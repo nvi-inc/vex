@@ -631,6 +631,8 @@ $SCHED; *schedule block
     mode = SX;
     source = HD123456 : 1 : 0;
     source = OJ2867 : 0 : 1;
+    source = 3C84 : 0 : 1 : JB;
+    source = 1921-293 : 0 : 1 : FD : JB;
     station = HS : 20 sec : 120 sec : 0 ft : : &n : 1;
     station = JB : 0 sec : 150 sec : 0 ft : : : 1;
   endscan;

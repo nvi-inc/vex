@@ -624,13 +624,15 @@ struct switching_cycle *make_switching_cycle(char *origin,
 }
 
 struct source  *make_source(char *key, struct dvalue *center,
-			      struct dvalue *correlate)
+			      struct dvalue *correlate,
+			      struct llist *stations)
 {
   NEWSTRUCT(new,source);
 
   new->key=key;
   new->center=center;
   new->correlate=correlate;
+  new->stations=stations;
 
   return new;
 }
@@ -1845,6 +1847,8 @@ static int
 get_source_field(Source *source,int n,int *link,int *name,char **value,
 		   char **units)
 {
+  int ierr;
+
   *link=0;
   *name=1;
   *units=NULL;
@@ -1869,7 +1873,15 @@ get_source_field(Source *source,int n,int *link,int *name,char **value,
     *name=0;
     break;
   default:
-    return -1;
+    if(n < 1 )
+      return -1;
+    ierr=get_svalue_list_field(source->stations,n-3,link,name,value,units);
+    if(ierr==-1)
+      return -1;
+    else if (ierr!=0) {
+      fprintf(stderr,"unknown error in get_source_field %d\n",ierr);
+      exit(1);
+    }
   }
   return 0;
 }

@@ -105,6 +105,7 @@ struct source {
   char *key;
   struct dvalue *center;
   struct dvalue *correlate;
+  struct llist *stations;
 };
 
 typedef struct source Source;
@@ -642,7 +643,7 @@ struct external *make_external(char *file, int primitive, char *name);
 struct switching_cycle *make_switching_cycle(char *origin,
 					     struct llist *periods);
 struct source  *make_source(char *key, struct dvalue *center,
-			      struct dvalue *correlate);
+			      struct dvalue *correlate, struct llist *stations);
 struct station  *make_station(char *key, struct dvalue *start,
 			      struct dvalue *stop, struct dvalue *start_pos,
 			      char *pass, char *sector, struct llist *drives);
@@ -1082,6 +1083,9 @@ create_source(char *str);
 
 void *
 create_source2(char *str, char *str2, char *str3);
+
+void *
+create_source_stations2(char *str);
 
 void *
 create_scan_list(char *str, char *str2);

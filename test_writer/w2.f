@@ -33,15 +33,25 @@ c
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch('1'//char(0)),
      &     ptr_ch('0'//char(0)))
+      call fcreate_source_stations2(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch(char(0)),
      &     ptr_ch('0'//char(0)))
+      call fcreate_source_stations2(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch('1'//char(0)),
      &     ptr_ch(char(0)))
+      call fcreate_source_stations2(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch(char(0)),
      &     ptr_ch(char(0)))
+      call fcreate_source_stations2(ptr_ch(char(0)))
+      call fcreate_source2(ptr_ch('3c123'//char(0)),
+     &     ptr_ch(char(0)),
+     &     ptr_ch(char(0)))
+      call fcreate_source_stations2(ptr_ch('JB'//char(0)))
+      call fcreate_source_stations2(ptr_ch('FD'//char(0)))
+      call fcreate_source_stations2(ptr_ch(char(0)))
       call fcreate_intent(ptr_ch('3c123'//char(0)),
      &     ptr_ch('CLOCK_CHECK'//char(0)),
      &     ptr_ch('True'//char(0)))

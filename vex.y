@@ -249,6 +249,8 @@ struct s2_data_source  *dsptr;
 %type  <lwptr>  sched_lowl sched_defx
 %type  <sval>	start mode
 %type  <soptr>	source
+%type  <llptr>	source_stations
+%type  <sval>	source_station
 %type  <dvptr>	start_position
 %type  <snptr>	station
 %type  <llptr>  drives
@@ -626,12 +628,19 @@ start:		T_START '=' T_NAME ';'	{$$=$3;}
 ;
 mode:		T_MODE '=' T_NAME ';'	{$$=$3;}
 ;
-source:  T_SOURCE '=' T_NAME ':' value2 ':' value2 ';'
-                {$$=make_source($3,$5,$7);}
+source:  T_SOURCE '=' T_NAME ':' value2 ':' value2 source_stations ';'
+                {$$=make_source($3,$5,$7,$8);}
+                | T_SOURCE '=' T_NAME ':' value2 ':' value2 ';'
+                {$$=make_source($3,$5,$7,NULL);}
                 | T_SOURCE '=' T_NAME ':' value2 ';'
-                {$$=make_source($3,$5,NULL);}
+                {$$=make_source($3,$5,NULL,NULL);}
                 | T_SOURCE '=' T_NAME ';'
-                {$$=make_source($3,NULL,NULL);}
+                {$$=make_source($3,NULL,NULL,NULL);}
+;
+source_stations: source_stations source_station	{$$=add_list($1,$2);}
+		| source_station		{$$=add_list(NULL,$1);}
+;
+source_station:	':' T_NAME  		{$$=$2;}
 ;
 station:	T_STATION '=' T_NAME ':'	/* name */
 		unit_value ':'			/* data start */
