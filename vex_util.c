@@ -117,6 +117,9 @@ static int
 get_record_method_field(Record_method *record_method,int n,int *link,
 			  int *name, char **value, char **units);
 static int
+get_record_control_field(Record_control *record_control,int n,int *link,
+			  int *name, char **value, char **units);
+static int
 get_datastream_field(Datastream *datastream,int n,int *link,
 			  int *name, char **value, char **units);
 static int
@@ -932,6 +935,14 @@ struct record_method *make_record_method(char *pattern, struct dvalue *early,
 
   return new;
 }
+struct record_control *make_record_control(struct dvalue *control)
+{
+  NEWSTRUCT(new,record_control);
+
+  new->control=control;
+
+  return new;
+}
 struct datastream *make_datastream(char *link,char *format,
 				   char *label)
 {
@@ -1507,7 +1518,6 @@ char **units)
   case T_RECORD_TRANSPORT_TYPE:
   case T_ELECTRONICS_RACK_TYPE:
   case T_TAPE_CONTROL:
-  case T_RECORD_CONTROL:
   case T_NUT_MODEL:
   case T_EXPER_DESCRIPTION:
   case T_PI_NAME:
@@ -1606,6 +1616,9 @@ char **units)
     break;
   case T_RECORD_METHOD:
     ierr=get_record_method_field(ptr,n,link,name,value,units);
+    break;
+  case T_RECORD_CONTROL:
+    ierr=get_record_control_field(ptr,n,link,name,value,units);
     break;
   case T_DATASTREAM:
     ierr=get_datastream_field(ptr,n,link,name,value,units);
@@ -2667,6 +2680,27 @@ get_record_method_field(Record_method *record_method,int n,int *link,
       return -1;
     *value=record_method->gap->value;
     *units=record_method->gap->units;
+    break;
+  default:
+    return -1;
+  }
+  return 0;
+}
+static int
+get_record_control_field(Record_control *record_control,int n,int *link,
+			  int *name, char **value, char **units)
+{
+  *link=0;
+  *name=1;
+  *units=NULL;
+  *value=NULL;
+
+  switch(n) {
+  case 1:
+    *name=0;
+    if(record_control->control == NULL)
+      return -1;
+    *value=record_control->control->value;
     break;
   default:
     return -1;

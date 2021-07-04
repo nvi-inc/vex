@@ -398,7 +398,8 @@ c
      &                       ptr_ch(char(0)),
      &                       ptr_ch('21'//char(0)),
      &                       ptr_ch('days'//char(0)))
-      call fcreate_record_control(ptr_ch('master'//char(0)))
+      call fcreate_record_control(ptr_ch('1'//char(0)))
+      call fcreate_record_control(ptr_ch('0'//char(0)))
       call fend_def
 C
       call fcreate_block(ptr_ch('EOP'//char(0)))
