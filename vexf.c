@@ -1239,7 +1239,7 @@ integer *n;
   save_type=T_SOURCE;
   save_ptr=get_scan_source2(save_lowls);
   for (i=1;i < *n && save_ptr!= NULL;i++)
-    save_ptr=get_scan_source_next2();
+    save_ptr=get_scan_source2_next();
 
   if(save_ptr==NULL)
     return -6;

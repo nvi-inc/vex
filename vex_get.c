@@ -80,7 +80,7 @@ get_scan_mode(Llist *lowls)
 }
 /*---------------------------------------------------------------------------*/
 void *
-get_scan_source_next2()
+get_scan_source2_next()
 {
   return get_scan_source2(NULL);
 }
