@@ -1727,7 +1727,7 @@ create_record_control(char *str)
       s1=(char *)strdup(str);
       qref_list = add_list(qref_list,
 			   make_lowl(T_RECORD_CONTROL,
-				     make_record_control(make_dvalue(s1,NULL))));
+				     make_dvalue(s1,NULL)));
     }
 }  
 /*-------------------------------------------------------------------*/

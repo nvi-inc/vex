@@ -303,7 +303,7 @@ struct s2_data_source  *dsptr;
 %type  <eiptr>  equip_info
 %type  <coptr>  connection
 %type  <rmptr>  record_method
-%type  <sval>   record_control
+%type  <dvptr>  record_control
 
 %type  <llptr>  datastreams_block datastreams_defs datastreams_lowls 
 %type  <dfptr>	datastreams_def
@@ -997,8 +997,7 @@ record_method:  T_RECORD_METHOD '=' T_NAME ':' unit_value2 ':' unit_value ';'
                 | T_RECORD_METHOD '=' T_NAME ';'
                 {$$=make_record_method($3,NULL,NULL);}
 ;
-record_control:	T_RECORD_CONTROL '=' value ';'
-                {$$=make_record_control($3);}
+record_control:		T_RECORD_CONTROL '=' value ';'		{$$=$3;}
 ;
 /* $DATASTREAMS block */
 
