@@ -30,7 +30,7 @@ extern FILE * yyin;
 extern struct vex *vex_ptr;
 
 /*---------------------------------------------------------------------------*/
-int vex_open(char *name, struct vex **vex)
+int vex_open(const char *name, struct vex **vex)
 {
   *vex=NULL;
   yyin=fopen(name,"r");
@@ -489,12 +489,12 @@ get_all_lowl_next()
 }
 /*---------------------------------------------------------------------------*/
 void *
-get_all_lowl(char *station_in, char *mode_in,
+get_all_lowl(const char *station_in, const char *mode_in,
 	     int statement_in, int primitive_in, struct vex *vex_in)
 {
   void *ptr;
 
-  static char *station, *mode;
+  static const char *station, *mode;
   static struct vex *vex;
   static int primitive,statement;
 
@@ -582,7 +582,7 @@ get_mode_lowl_next()
 }
 /*---------------------------------------------------------------------------*/
 void *
-get_mode_lowl(char *station_in, char *mode_in,
+get_mode_lowl(const char *station_in, const char *mode_in,
 	      int statement_in, int primitive_in, struct vex *vex_in)
 {
 
@@ -594,7 +594,7 @@ get_mode_lowl(char *station_in, char *mode_in,
   Llist *defs;
   char *def;
 
-  static char *station, *mode;
+  static const char *station, *mode;
   static struct vex *vex;
   static int primitive,statement;
 
@@ -699,7 +699,7 @@ get_station_lowl_next()
 }
 /*---------------------------------------------------------------------------*/
 void *
-get_station_lowl(char *station_in,
+get_station_lowl(const char *station_in,
 		 int statement_in, int primitive_in, struct vex *vex_in)
 {
 
@@ -711,7 +711,7 @@ get_station_lowl(char *station_in,
   Llist *defs;
   char *def;
 
-  static char *station;
+  static const char *station;
   static struct vex *vex;
   static int primitive,statement;
 
@@ -974,7 +974,7 @@ find_block(int block,struct vex *vex)
 }
 /*---------------------------------------------------------------------------*/
 Llist *
-find_def(Llist *defs,char *mode)
+find_def(Llist *defs,const char *mode)
 {
   while(defs!=NULL && defs->ptr!=NULL
 	&& (((Lowl *)defs->ptr)->statement != T_DEF
@@ -1197,6 +1197,8 @@ get_all_literals(struct llist *literals, char *array[])
     i++;
     literals = get_literal_lowl_next();
   }
+
+  return 0;
 }
 /*---------------------------------------------------------------------------*/
 void *

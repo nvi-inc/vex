@@ -424,7 +424,7 @@ integer *vex;
 /* susequent calls use 0. The call with vex nonzero should specify */
 /* the station, mode, statement, and primitive block (containing the */
 /* statement). When vex is zero, station, mode, statement, and primitive */
-/* are ignored.
+/* are ignored. */
 
 /* When this routine does not return an error, the fields can be accessed */
 /*   using fvex_field. */
@@ -437,7 +437,7 @@ integer *vex;
 /*   character*(*) station     - station def name, null terminated */
 /*   character*(*) mode        - mode def name, null terminated */
 /*   character*(*) statement   - the statement to be retrieved, */
-/*                               null terminated
+/*                               null terminated */
 /*   character*(*) primitive   - primitive block from which the statement */
 /*                               should be retrieved. omit the leading "$" */
 /*                               null terminated */
@@ -616,7 +616,7 @@ integer *start_len, *mode_len, *scanid_len, *vex;
 
 /*  input: */
 /*   character*(*) station     - the station to reurn statements for */
-/*                               null terminated
+/*                               null terminated */
 /*   integer vex               - vex file reference */
 /*                               use value returned open_vex for first call */
 /*                               use 0 for subsequent calls */
@@ -633,7 +633,7 @@ integer *start_len, *mode_len, *scanid_len, *vex;
 /*                               -5 = mode did not fit in mode */
 /*                               -6 = scanid did not fit in scanid */
 {
-  int iprimitive, ierr;
+  int ierr;
   void *ptr;
   char *sidptr;
 
@@ -696,7 +696,7 @@ integer *start_len, *mode_len, *scanid_len, *vex;
 
 /*  input: */
 /*   character*(*) station     - the station to reurn statements for */
-/*                               null terminated
+/*                               null terminated */
 /*   integer vex               - vex file reference */
 /*                               use value returned open_vex for first call */
 /*                               use 0 for subsequent calls */
@@ -713,7 +713,7 @@ integer *start_len, *mode_len, *scanid_len, *vex;
 /*                               -5 = mode did not fit in mode */
 /*                               -6 = scanid did not fit in scanid */
 {
-  int iprimitive, ierr;
+  int ierr;
   void *ptr;
   char *sidptr;
 
@@ -757,7 +757,7 @@ integer *start_len, *mode_len, *scanid_len,*vex;
 /*     &                           ptr_ch(scanid),len(scanid), */
 /*     &                                   vex)               >*/
 /*<     implicit none                                         >*/
-/*<      character*(*) start,mode,station,scanid
+/*<      character*(*) start,mode,station,scanid               */
 /*<      integer vex                                          >*/
 
 /* This routine can be used to retrieve all of the station statments */
@@ -1005,7 +1005,7 @@ char *string;
 
 {
   char *string2;
-  int ierr,count;
+  int count;
 
   /* first read in a string of literal text, and return the */
   /* pointer to the next literal string. */
@@ -1014,7 +1014,7 @@ char *string;
   /* How many characters do we have. */
   count = strlen(string2);
   if(count!=0)
-    ierr=field_copy(string,count+1,string2);
+    field_copy(string,count+1,string2);
 
   /* Evaluate the next pointer 'save_ptr' for end of a literal block */
   /* There could be several literal sub-blocks. */
@@ -1057,14 +1057,13 @@ char **string;
 /*   integer (return value)    - count or error  -3 last statement */
 {
   char *string2;
-  int ierr,count;
-  void *ptr;
+  int count;
 
   save_ptr=get_a_literal(save_ptr,&string2);
   count = strlen(string2);
   string2[count]='\0';
   if(count!=0)
-    ierr=field_copy(*string,count+1,string2);
+    field_copy(*string,count+1,string2);
 
   if(save_ptr==NULL)
     {
@@ -1137,7 +1136,7 @@ char **field;
 /*				 -6 = n out of range */
 /*				 -9 = no statement available */
 {
-  int i,link,name, ierr;
+  int link,name, ierr;
   char *ptr, *units;
 
   save_units=NULL;
@@ -1231,7 +1230,7 @@ integer *n;
 /*   using fvex_field. */
 
 {
-  int i, ierr;
+  int i;
 
   if (*n < 1)
     return -6;
@@ -1334,7 +1333,7 @@ doublereal *double__;
 
   char num[16], denom[16], *slash;
   int found, num_found, denom_found, iexp;
-  double factor, num_factor, denom_factor;
+  double factor=0.0, num_factor=0.0, denom_factor=0.0;
 
   static struct {
     char *str;
@@ -1445,7 +1444,7 @@ doublereal *double__;
   num[slash-*units]='\0';
 
   if(strlen(slash) > sizeof(denom)) {
-    fprintf(stderr," slash '%s' strlen(slash) %d\n",slash,strlen(slash));
+    fprintf(stderr," slash '%s' strlen(slash) %d\n",slash,(int)(strlen(slash)));
     fprintf(stderr,"denom too small in fvex_double %.24s",*units);
     return -8;
   }

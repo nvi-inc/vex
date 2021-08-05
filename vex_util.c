@@ -569,8 +569,6 @@ struct chan_def  *make_chan_def(char *band_id, struct dvalue *sky_freq,
 				char *chan_id, char *bbc_id,
 				char *pcal_id, struct llist *states)
 {
-  int num;
-
   if(vex_version.lessthan2) {
       if(chan_id == NULL ||
       (states !=NULL && ((struct dvalue *) (states->ptr))->value == NULL)
@@ -2341,30 +2339,36 @@ get_clock_early_field(Clock_early *clock_early,int n,int *link,
   case 4:
     *name=0;
     if(clock_early->rate == NULL)
+    {
       if(clock_early->peculiar == NULL)
 	return -1;
       else
 	return 0;
+    }
     *value=clock_early->rate->value;
     *units=clock_early->rate->units;
     break;
   case 5:
     *name=0;
     if(clock_early->accel == NULL)
+    {
       if(clock_early->peculiar == NULL)
 	return -1;
       else
 	return 0;
+    }
     *value=clock_early->accel->value;
     *units=clock_early->accel->units;
     break;
   case 6:
     *name=0;
     if(clock_early->jerk == NULL)
+    {
       if(clock_early->peculiar == NULL)
 	return -1;
       else
 	return 0;
+    }
     *value=clock_early->jerk->value;
     *units=clock_early->jerk->units;
     break;
@@ -2896,10 +2900,12 @@ get_scheduling_software_field(Scheduling_software *scheduling_software,
     break;
   case 2:
     if(scheduling_software->version==NULL)
+    {
       if(scheduling_software->epoch==NULL)
 	return -1;
       else
 	return 0;
+    }
     *value=scheduling_software->version;
     break;
   case 3:
@@ -2928,10 +2934,12 @@ get_vex_file_writer_field(Vex_file_writer *vex_file_writer,
     break;
   case 2:
     if(vex_file_writer->version==NULL)
+    {
       if(vex_file_writer->epoch==NULL)
 	return -1;
       else
 	return 0;
+    }
     *value=vex_file_writer->version;
     break;
   case 3:

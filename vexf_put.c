@@ -40,13 +40,7 @@ typedef double doublereal;
                                       if(strcmp(units,table[i].str)==0) {\
                                         out=table[i].factor;\
 					found=1; } }
-static void *save_ptr=NULL;
-static int save_type=0;
-static char *save_units=NULL;
-static Llist *save_lowls=NULL;
 
-static int
-field_copy(char *field,int field_len,char *ptr);
 /* ----------------------------------------------------------------------- */
 void
 #ifdef F2C
@@ -154,7 +148,7 @@ fend_def
 /* ... */
 
 /* input: */
-/*   none
+/*   none */
 /* output: */
 /*   VEX format def name */
 /* */

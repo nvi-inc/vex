@@ -997,7 +997,7 @@ record_method:  T_RECORD_METHOD '=' T_NAME ':' unit_value2 ':' unit_value ';'
                 | T_RECORD_METHOD '=' T_NAME ';'
                 {$$=make_record_method($3,NULL,NULL);}
 ;
-record_control:		T_RECORD_CONTROL '=' value ';'		{$$=$3;}
+record_control: T_RECORD_CONTROL '=' value ';'		{$$=$3;}
 ;
 /* $DATASTREAMS block */
 

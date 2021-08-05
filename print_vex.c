@@ -42,8 +42,6 @@ void print_vex(struct vex *vex)
 
 void print_vex_blocks(struct llist *blocks)
 {
-  char *ptr;
-
   while (blocks!=NULL) {
     struct block *this_=(struct block *)blocks->ptr;
     switch (this_->block) {
@@ -312,7 +310,6 @@ void print_svalue(char *svalue)
       case '"':
 	outch='"';
 	break;
-      outch:
       default:
 	fprintf(fp, "x%02x",*ptr);
       outch='\0';
