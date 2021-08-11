@@ -2408,8 +2408,7 @@ get_clock_early_field(Clock_early *clock_early,int n,int *link,
     break;
   case 4:
     *name=0;
-    if(clock_early->rate == NULL)
-    {
+    if(clock_early->rate == NULL) {
       if(clock_early->peculiar == NULL)
 	return -1;
       else
@@ -2420,8 +2419,7 @@ get_clock_early_field(Clock_early *clock_early,int n,int *link,
     break;
   case 5:
     *name=0;
-    if(clock_early->accel == NULL)
-    {
+    if(clock_early->accel == NULL) {
       if(clock_early->peculiar == NULL)
 	return -1;
       else
@@ -2432,8 +2430,7 @@ get_clock_early_field(Clock_early *clock_early,int n,int *link,
     break;
   case 6:
     *name=0;
-    if(clock_early->jerk == NULL)
-    {
+    if(clock_early->jerk == NULL) {
       if(clock_early->peculiar == NULL)
 	return -1;
       else
@@ -2969,8 +2966,7 @@ get_scheduling_software_field(Scheduling_software *scheduling_software,
     *value=scheduling_software->program;
     break;
   case 2:
-    if(scheduling_software->version==NULL)
-    {
+    if(scheduling_software->version==NULL) {
       if(scheduling_software->epoch==NULL)
 	return -1;
       else
@@ -3003,8 +2999,7 @@ get_vex_file_writer_field(Vex_file_writer *vex_file_writer,
     *value=vex_file_writer->program;
     break;
   case 2:
-    if(vex_file_writer->version==NULL)
-    {
+    if(vex_file_writer->version==NULL) {
       if(vex_file_writer->epoch==NULL)
 	return -1;
       else

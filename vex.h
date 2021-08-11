@@ -1055,7 +1055,7 @@ get_literal_def(struct vex *vex_in);
 Llist *
 find_literal(Llist *defs);
 
-void *
+void
 get_all_literals(struct llist *literals, char *str[]);
 
 void *
