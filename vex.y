@@ -123,7 +123,7 @@ struct source_type     *stptr;
 struct source_model    *smptr;
 
 struct datum           *dmptr;
-struct vector          *vrptr;
+struct c_vector          *vrptr;
 
 struct vsn             *vsptr;
 
