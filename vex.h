@@ -903,7 +903,7 @@ get_station_def_next();
 
 char *
 get_station_def(struct vex *vex_in);
-//new
+
 void *
 end_def();
 
@@ -1065,7 +1065,7 @@ get_literal_def(struct vex *vex_in);
 Llist *
 find_literal(Llist *defs);
 
-void *
+void
 get_all_literals(struct llist *literals, char *str[]);
 
 void *
