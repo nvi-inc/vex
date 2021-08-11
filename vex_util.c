@@ -33,11 +33,16 @@ extern struct vex *vex_ptr;
 
 struct vex_version vex_version;
 
-#define NEWSTRUCT(PTR,TYPE)	struct TYPE *PTR;\
+#define NEWSTRUCTDECLARE(PTR, TYPE) \
+            struct TYPE *PTR
+#define NEWSTRUCTALLOC(PTR,TYPE) \
 			PTR=(struct TYPE *) malloc(sizeof(struct TYPE));\
 			if(PTR == NULL) {\
-			fprintf(stderr,"out of memory allocating TYPE\n");\
+			    fprintf(stderr,"out of memory allocating type %s\n", #TYPE);\
 			exit(1);}
+#define NEWSTRUCT(PTR,TYPE)	\
+            NEWSTRUCTDECLARE(PTR, TYPE);\
+            NEWSTRUCTALLOC(PTR, TYPE)
 
 static int
 get_chan_def_field(Chan_def *chan_def,int n,int *link,int *name, 
@@ -575,6 +580,8 @@ struct chan_def  *make_chan_def(char *band_id, struct dvalue *sky_freq,
 				char *chan_id, char *bbc_id,
 				char *pcal_id, struct llist *states)
 {
+  NEWSTRUCTDECLARE(new, chan_def);
+
   if(vex_version.lessthan2) {
       if(chan_id == NULL ||
       (states !=NULL && ((struct dvalue *) (states->ptr))->value == NULL)
@@ -583,7 +590,7 @@ struct chan_def  *make_chan_def(char *band_id, struct dvalue *sky_freq,
       }
   }
 
-  NEWSTRUCT(new,chan_def);
+  NEWSTRUCTALLOC(new,chan_def);
 
   new->band_id=band_id;
   new->sky_freq=sky_freq;
@@ -645,13 +652,15 @@ struct station  *make_station(char *key, struct dvalue *start,
 			      struct dvalue *stop, struct dvalue *start_pos,
 			      char *pass, char *sector, struct llist *drives)
 {
+  NEWSTRUCTDECLARE(new,station);
+
   if(pass != NULL && strlen(pass) != 0 ) {
    if(!vex_version.lessthan2) {
     yyerror("VEX1 station present");
    }
   }
 
-  NEWSTRUCT(new,station);
+  NEWSTRUCTALLOC(new,station);
 
   new->key=key;
   new->start=start;
@@ -1067,6 +1076,8 @@ struct if_def *make_if_def(char *if_id, char *physical, char *polar,
 			   struct dvalue *pcal_base,
                struct dvalue *samp_rate)
 {
+  NEWSTRUCTDECLARE(new,if_def);
+
   if(physical == NULL || strlen(physical) == 0 ) {
     if(vex_version.lessthan2) {
       yyerror("VEX2 if_def present");
@@ -1075,7 +1086,7 @@ struct if_def *make_if_def(char *if_id, char *physical, char *polar,
     yyerror("VEX1 if_def present");
   }
 
-  NEWSTRUCT(new,if_def);
+  NEWSTRUCTALLOC(new,if_def);
 
   new->if_id=if_id;
   new->physical=physical;
