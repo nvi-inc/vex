@@ -78,9 +78,6 @@ static int
 get_bbc_assign_field(Bbc_assign *bbc_assign,int n,int *link,
 			  int *name, char **value, char **units);
 static int
-get_stream_def_field(Stream_def *stream_def,int n,int *link,
-			  int *name, char **value, char **units);
-static int
 get_stream_sample_rate_field(Stream_sample_rate *stream_sample_rate,int n,int *link,
 			  int *name, char **value, char **units);
 static int
@@ -229,6 +226,9 @@ static int
 get_fanout_def_field(Fanout_def *fanout_def,int n,int *link,
 	      int *name, char **value, char **units);
 static int
+get_stream_def_field(Stream_def *stream_def,int n,int *link,
+	      int *name, char **value, char **units);
+static int
 get_bitstream_list_field(Llist *list,int n,int *link,int *name,
 		      char **value, char **units);
 static int
@@ -293,6 +293,7 @@ static struct {
   {"SOURCE", B_SOURCE},
   {"TAPELOG_OBS", B_TAPELOG_OBS},
   {"TRACKS", B_TRACKS},
+  {"THREADS", B_THREADS},
   {NULL, 0}
 };
 static  struct {
@@ -466,6 +467,11 @@ static  struct {
   
   {"fanin_def", T_FANIN_DEF},
   {"fanout_def", T_FANOUT_DEF},
+
+  {"format", T_FORMAT_DEF},
+  {"thread", T_THREAD_DEF},
+  {"channel", T_CHANNEL_DEF},
+
   {"track_frame_format", T_TRACK_FRAME_FORMAT},
   {"data_modulation", T_DATA_MODULATION},
   {"VLBA_frmtr_sys_trk", T_VLBA_FRMTR_SYS_TRK},
@@ -1359,6 +1365,59 @@ struct fanout_def *make_fanout_def(char *subpass, struct llist *bitstream,
 
   return new;
 }
+
+struct format_def* make_format_def(char* format,
+				   char* extendedformat,
+				   struct dvalue* datarate)
+{
+  NEWSTRUCT(new,format_def);
+
+  new->format=format;
+  new->extendedformat=extendedformat;
+  new->datarate=datarate;
+
+  return new;
+}
+
+struct thread_def* make_thread_def(
+           struct dvalue* threadnr,
+				   struct dvalue* backendnr,
+				   struct dvalue* recordernr,
+				   struct dvalue* datarate,
+				   struct dvalue* numchan,
+				   struct dvalue* bitspersample,
+				   char*          format,
+				   char*          extendedformat,
+				   struct dvalue* bytesperpacket)
+{
+  NEWSTRUCT(new,thread_def);
+
+  new->threadnr = threadnr;
+  new->backendnr = backendnr;
+  new->recordernr = recordernr;
+  new->datarate = datarate;
+  new->numchan = numchan;
+  new->bitspersample = bitspersample;
+  new->format=format;
+  new->extendedformat=extendedformat;
+  new->bytesperpacket=bytesperpacket;
+
+  return new;
+}
+
+struct channel_def* make_channel_def(char* chanid,
+            struct dvalue* threadnr,
+            struct dvalue* channelnr)
+{
+  NEWSTRUCT(new,channel_def);
+
+  new->chanid = chanid;
+  new->threadnr = threadnr;
+  new->channelnr = channelnr;
+
+  return new;
+}
+
 struct vlba_frmtr_sys_trk *make_vlba_frmtr_sys_trk(struct dvalue *output,
 						   char *use,
 						   struct dvalue *start,

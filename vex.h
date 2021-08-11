@@ -623,6 +623,34 @@ struct fanout_def {
 
 typedef struct fanout_def Fanout_def;
 
+struct format_def {
+  char* format;
+  char* extendedformat;
+  struct dvalue* datarate;
+};
+typedef struct format_def Format_def;
+
+struct thread_def {
+   struct dvalue* threadnr;
+   struct dvalue* backendnr;
+   struct dvalue* recordernr;
+   struct dvalue* datarate;
+   struct dvalue* numchan;
+   struct dvalue* bitspersample;
+   char*          format;
+   char*          extendedformat;
+   struct dvalue* bytesperpacket;
+};
+typedef struct thread_def Thread_def;
+
+struct channel_def {
+  char* chanid;
+  struct dvalue* threadnr;
+  struct dvalue* channelnr;
+};
+typedef struct channel_def Channel_def;
+
+
 struct vlba_frmtr_sys_trk {
   struct dvalue *output;
   char *use;
@@ -801,6 +829,25 @@ struct vlba_frmtr_sys_trk *make_vlba_frmtr_sys_trk(struct dvalue *output,
 						   struct dvalue *stop);
 struct s2_data_source *make_s2_data_source(char *source,char *bbcx_id,
 					   char *bbcy_id);
+
+struct format_def* make_format_def(char* format,
+				   char* extendedformat,
+				   struct dvalue* datarate);
+
+struct thread_def* make_thread_def(
+           struct dvalue* threadnr,
+				   struct dvalue* backendnr,
+				   struct dvalue* recordernr,
+				   struct dvalue* datarate,
+				   struct dvalue* numchan,
+				   struct dvalue* bitspersample,
+				   char*          format,
+				   char*          extendedformat,
+				   struct dvalue* bytesperpacket);
+
+struct channel_def* make_channel_def(char* chanid,
+            struct dvalue* threadnr,
+            struct dvalue* channelnr);
 
 int
 lowl2int(char *lowl);
