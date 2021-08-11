@@ -217,7 +217,7 @@ static int
 get_datum_field(Datum *datum,int n,int *link,
 			  int *name, char **value, char **units);
 static int
-get_vector_field(Vector *vector,int n,int *link,
+get_vector_field(c_Vector *vector,int n,int *link,
 			  int *name, char **value, char **units);
 static int
 get_vsn_field(Vsn *vsn,int n,int *link,
@@ -1301,7 +1301,7 @@ struct datum *make_datum(char *time, char *ra, char *dec,
 
   return new;
 }
-struct vector *make_vector(char *time,
+struct c_vector *make_vector(char *time,
                      struct dvalue *x,
                      struct dvalue *y,
                      struct dvalue *z,
@@ -1309,7 +1309,7 @@ struct vector *make_vector(char *time,
                      struct dvalue *vy,
                      struct dvalue *vz)
 {
-  NEWSTRUCT(new,vector);
+  NEWSTRUCT(new,c_vector);
 
   new->time=time;
   new->x=x;
@@ -3643,7 +3643,7 @@ get_datum_field(Datum *datum,int n,int *link,
   return 0;
 }
 int
-get_vector_field(Vector *vector,int n,int *link,
+get_vector_field(c_Vector *vector,int n,int *link,
 			  int *name, char **value, char **units)
 {
   *link=0;

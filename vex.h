@@ -583,7 +583,7 @@ struct datum {
 
 typedef struct datum Datum;
 
-struct vector {
+struct c_vector {
   char *time;
   struct dvalue *x;
   struct dvalue *y;
@@ -593,7 +593,7 @@ struct vector {
   struct dvalue *vz;
 };
 
-typedef struct vector Vector;
+typedef struct c_vector c_Vector;
 
 struct vsn {
   struct dvalue *drive;
@@ -781,7 +781,7 @@ struct source_model *make_source_model(struct dvalue *component,
 				       struct dvalue *decoff);
 struct datum *make_datum(char *time, char *ra, char *dec,
                      struct dvalue *ra_rate, struct dvalue *dec_rate);
-struct vector *make_vector(char *time,
+struct c_vector *make_vector(char *time,
                           struct dvalue *x,
                           struct dvalue *y,
                           struct dvalue *z,
