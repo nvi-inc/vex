@@ -40,6 +40,7 @@
 static char *find_end(char *buffer, char *text);
 
 static int ref=0;
+static int inthreads=0;
 static int trailing=0;
 int lines=1;
 static int version=1;
@@ -105,7 +106,7 @@ ANGLE		[+-]?([0-9]{1,2})d([0-9]{1,2})\'{SEC}\"
 <LINE,REF>"$"EXTENSIONS		{BEGIN(INITIAL);return B_EXTENSIONS;}
 <LINE,REF>"$"CORR		{BEGIN(INITIAL);return B_CORR;}
 <LINE,REF>"$"DAS		{BEGIN(INITIAL);return B_DAS;}
-<LINE,REF>"$"DATASTREAMS	{BEGIN(INITIAL);return B_DATASTREAMS;}
+<LINE,REF>"$"DATASTREAMS	{inthreads = 0; BEGIN(INITIAL);return B_DATASTREAMS;}
 <LINE,REF>"$"HEAD_POS	{BEGIN(INITIAL);return B_HEAD_POS;}
 <LINE,REF>"$"PASS_ORDER	{BEGIN(INITIAL);return B_PASS_ORDER;}
 <LINE,REF>"$"PHASE_CAL_DETECT	{BEGIN(INITIAL);return B_PHASE_CAL_DETECT;}
@@ -116,6 +117,7 @@ ANGLE		[+-]?([0-9]{1,2})d([0-9]{1,2})\'{SEC}\"
 <LINE,REF>"$"SOURCE	{BEGIN(INITIAL);return B_SOURCE;}
 <LINE,REF>"$"TAPELOG_OBS	{BEGIN(INITIAL);return B_TAPELOG_OBS;}
 <LINE,REF>"$"TRACKS	{BEGIN(INITIAL);return B_TRACKS;}
+<LINE,REF>"$"THREADS	{inthreads = 1; BEGIN(INITIAL); return B_THREADS;}
 <LINE>"$"SCHED	{BEGIN(INITIAL);return B_SCHED;}
 
 <REF,INITIAL>=		{if(ref == 1) {ref=0;BEGIN(DEF);} return(yytext[0]);}
@@ -171,8 +173,8 @@ ANGLE		[+-]?([0-9]{1,2})d([0-9]{1,2})\'{SEC}\"
 <LINE>record_control            {BEGIN(INITIAL);return T_RECORD_CONTROL;}
 
 <LINE>datastream	        {BEGIN(INITIAL);return T_DATASTREAM;}
-<LINE>thread	                {BEGIN(INITIAL);return T_THREAD;}
-<LINE>channel	                {BEGIN(INITIAL);return T_CHANNEL;}
+<LINE>thread	                {BEGIN(INITIAL);return (inthreads ? T_THREAD_DEF : T_THREAD);}
+<LINE>channel	                {BEGIN(INITIAL);return (inthreads ? T_CHANNEL_DEF : T_CHANNEL);}
 <LINE>merged_datastream	        {BEGIN(INITIAL);return T_MERGED_DATASTREAM;}
 
 <LINE>TAI-UTC			{BEGIN(INITIAL);return T_TAI_UTC;}
@@ -295,6 +297,8 @@ ANGLE		[+-]?([0-9]{1,2})d([0-9]{1,2})\'{SEC}\"
 <LINE>VLBA_trnsprt_sys_trk	{BEGIN(INITIAL);return T_VLBA_TRNSPRT_SYS_TRK;}
 <LINE>S2_recording_mode		{BEGIN(INITIAL);return T_S2_RECORDING_MODE;}
 <LINE>S2_data_source		{BEGIN(INITIAL);return T_S2_DATA_SOURCE;}
+
+<LINE>format		{BEGIN(INITIAL);return T_FORMAT_DEF;}
 
 <LINE>start_literal\(		{BEGIN(INITIAL); yylval.llptr=lit(); return T_LITERAL;}
 	

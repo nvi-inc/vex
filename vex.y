@@ -132,6 +132,10 @@ struct fanout_def	*foptr;
 struct vlba_frmtr_sys_trk	*fsptr;
 struct s2_data_source  *dsptr;
 
+struct format_def  *fmptr;
+struct thread_def  *thdptr;
+struct channel_def *chdptr;
+
 }
 
 %token <ival>	T_VEX_REV T_REF T_DEF T_ENDDEF T_SCAN T_ENDSCAN
@@ -211,11 +215,13 @@ struct s2_data_source  *dsptr;
 %token <ival>   T_VLBA_FRMTR_SYS_TRK T_VLBA_TRNSPRT_SYS_TRK
 %token <ival>   T_S2_RECORDING_MODE T_S2_DATA_SOURCE
 
+%token <ival>   T_FORMAT_DEF T_THREAD_DEF T_CHANNEL_DEF
+
 %token <ival>	B_GLOBAL B_STATION B_MODE B_SCHED
 %token <ival>	B_EXPER B_SCHEDULING_PARAMS B_PROCEDURES B_EOP B_FREQ B_CLOCK
 %token <ival>	B_ANTENNA B_BBC B_CORR B_DAS B_HEAD_POS B_PASS_ORDER
 %token <ival>	B_PHASE_CAL_DETECT B_ROLL B_IF B_SEFD B_SITE B_SOURCE B_TRACKS
-%token <ival>   B_TAPELOG_OBS B_BITSTREAMS B_DATASTREAMS B_EXTENSIONS
+%token <ival>   B_TAPELOG_OBS B_BITSTREAMS B_THREADS B_DATASTREAMS B_EXTENSIONS
 
 %token <llptr>	T_LITERAL
 
@@ -448,13 +454,21 @@ struct s2_data_source  *dsptr;
 %type  <llptr>  bit_stream_list vlba_trnsprt_sys_trk
 %type  <dsptr>  s2_data_source
 
+
+%type  <llptr>  threads_block threads_defs threads_lowls
+%type  <dfptr>  threads_def
+%type  <lwptr>  threads_lowl threads_defx
+%type  <fmptr>  format_def
+%type  <thdptr> thread_def
+%type  <chdptr> channel_def
+
 %type  <exptr>  external_ref
 %type  <llptr>  literal
 %type  <llptr>  unit_list name_list value_list
 %type  <llptr>  unit_more
-%type  <dvptr>  unit_value value value2
+%type  <dvptr>  unit_value value value2 optional_value
 %type  <dvptr>  unit_option
-%type  <sval>   name_value
+%type  <sval>   name_value optional_name
 
 %type  <sval>   name_or_not empty_name link_or_not
 %type  <dvptr>  empty_value
@@ -510,6 +524,7 @@ block:	global_block			{$$=make_block(B_GLOBAL,$1);}
  	| source_block			{$$=make_block(B_SOURCE,$1);}
  	| tapelog_obs_block		{$$=make_block(B_TAPELOG_OBS,$1);}
  	| tracks_block			{$$=make_block(B_TRACKS,$1);}
+    | threads_block			{$$=make_block(B_THREADS,$1);}
 ;
 /* $GLOBAL block */
 
@@ -581,6 +596,7 @@ primitive:	B_EXPER			{$$=B_EXPER;}
 		| B_SOURCE		{$$=B_SOURCE;}
 		| B_TRACKS		{$$=B_TRACKS;}
 		| B_TAPELOG_OBS		{$$=B_TAPELOG_OBS;}
+    | B_THREADS       {$$=B_THREADS;}
 ;
 qrefs:	qrefs qrefx			{$$=add_list($1,$2);}
 	| qrefx				{$$=add_list(NULL,$1);}
@@ -1977,8 +1993,59 @@ bit_stream_list:	bit_stream_list ':' T_LINK ':' T_NAME
 			| T_LINK ':' T_NAME	
                                         {$$=add_list(add_list(NULL,$1),$3);}
 ;
+/* $THREADS */
+
+threads_block:  B_THREADS ';' threads_defs	{$$=$3;}
+		   | B_THREADS ';'		{$$=NULL;}
+;
+threads_defs:   threads_defs threads_defx {$$=add_list($1,$2);}
+                   | threads_defx	 	   {$$=add_list(NULL,$1);}
+;
+threads_defx:   threads_def	 {$$=make_lowl(T_DEF,$1);}
+		   | T_COMMENT 	         {$$=make_lowl(T_COMMENT,$1);}
+                   | T_COMMENT_TRAILING  {$$=make_lowl(T_COMMENT_TRAILING,$1);}
+;
+threads_def:	   T_DEF T_NAME ';' threads_lowls T_ENDDEF ';'
+						     {$$=make_def($2,$4);}
+		   | T_DEF T_NAME ';' T_ENDDEF ';'
+                 {$$=make_def($2,NULL);}
+;
+threads_lowls:  threads_lowls threads_lowl  {$$=add_list($1,$2);}
+                   | threads_lowl		     {$$=add_list(NULL,$1);}
+;
+threads_lowl:
+         format_def	        {$$=make_lowl(T_FORMAT_DEF,$1);}
+		   | thread_def         {$$=make_lowl(T_THREAD_DEF,$1);}
+		   | channel_def        {$$=make_lowl(T_CHANNEL_DEF,$1);}
+		   | external_ref       {$$=make_lowl(T_REF,$1);}
+		   | T_COMMENT          {$$=make_lowl(T_COMMENT,$1);}
+       | T_COMMENT_TRAILING {$$=make_lowl(T_COMMENT_TRAILING,$1);}
+;
+format_def:
+    T_FORMAT_DEF '=' T_NAME ':' optional_name ':' optional_value ';'
+					{$$=make_format_def($3, $5, $7);}
+;
+/*                           thrd      backend   recorder  rate      nchan     bits/sample */
+thread_def: T_THREAD_DEF '=' value ':' value ':' value ':' value ':' value ':' value ':'
+/*              format            extended          bytesperpacket */
+                optional_name ':' optional_name ':' optional_value ';'
+					{$$=make_thread_def($3, $5, $7, $9, $11, $13, $15, $17, $19);}
+;
+
+channel_def: T_CHANNEL_DEF '=' T_LINK /*T_NAME*/ ':' value ':' value ';'
+					{$$=make_channel_def($3, $5, $7);}
+;
+
 /* utility rules */
 
+optional_name :
+    /* empty */ {$$=NULL;}
+  | T_NAME      {$$=$1;}
+;
+optional_value :
+    /* empty */ {$$=NULL;}
+  | value       {$$=$1;}
+;
 external_ref:	T_REF T_NAME ':' primitive '=' T_NAME ';'
 			                        {$$=make_external($2,$4,$6);}
 ;
