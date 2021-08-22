@@ -33,25 +33,25 @@ c
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch('1'//char(0)),
      &     ptr_ch('0'//char(0)))
-      call fcreate_source_stations2(ptr_ch(char(0)))
+      call fcreate_source2_stations(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch(char(0)),
      &     ptr_ch('0'//char(0)))
-      call fcreate_source_stations2(ptr_ch(char(0)))
+      call fcreate_source2_stations(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch('1'//char(0)),
      &     ptr_ch(char(0)))
-      call fcreate_source_stations2(ptr_ch(char(0)))
+      call fcreate_source2_stations(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch(char(0)),
      &     ptr_ch(char(0)))
-      call fcreate_source_stations2(ptr_ch(char(0)))
+      call fcreate_source2_stations(ptr_ch(char(0)))
       call fcreate_source2(ptr_ch('3c123'//char(0)),
      &     ptr_ch(char(0)),
      &     ptr_ch(char(0)))
-      call fcreate_source_stations2(ptr_ch('JB'//char(0)))
-      call fcreate_source_stations2(ptr_ch('FD'//char(0)))
-      call fcreate_source_stations2(ptr_ch(char(0)))
+      call fcreate_source2_stations(ptr_ch('JB'//char(0)))
+      call fcreate_source2_stations(ptr_ch('FD'//char(0)))
+      call fcreate_source2_stations(ptr_ch(char(0)))
       call fcreate_intent(ptr_ch('3c123'//char(0)),
      &     ptr_ch('CLOCK_CHECK'//char(0)),
      &     ptr_ch('True'//char(0)))
@@ -499,7 +499,7 @@ c
      &                      ptr_ch('BBCa'//char(0)),
      &                      ptr_ch('USB_CAL'//char(0)),
      &                      ptr_ch(char(0)))
-      call fcreate_chan_def_states2(ptr_ch(char(0)))
+      call fcreate_chan_def2_states(ptr_ch(char(0)))
 c
       call fcreate_chan_def2(ptr_ch(char(0)),
      &                      ptr_ch('8500.99'//char(0)),
@@ -511,7 +511,7 @@ c
      &                      ptr_ch('BBCa'//char(0)),
      &                      ptr_ch('USB_CAL'//char(0)),
      &                      ptr_ch(char(0)))
-      call fcreate_chan_def_states2(ptr_ch(char(0)))
+      call fcreate_chan_def2_states(ptr_ch(char(0)))
 c
       call fcreate_chan_def2(ptr_ch('X'//char(0)),
      &                      ptr_ch('8500.99'//char(0)),
@@ -523,7 +523,7 @@ c
      &                      ptr_ch('BBCa'//char(0)),
      &                      ptr_ch('USB_CAL'//char(0)),
      &                      ptr_ch(char(0)))
-      call fcreate_chan_def_states2(ptr_ch(char(0)))
+      call fcreate_chan_def2_states(ptr_ch(char(0)))
 c
       call fcreate_chan_def2(ptr_ch('X'//char(0)),
      &                      ptr_ch('8500.99'//char(0)),
@@ -535,7 +535,7 @@ c
      &                      ptr_ch('BBCa'//char(0)),
      &                      ptr_ch(char(0)),
      &                      ptr_ch(char(0)))
-      call fcreate_chan_def_states2(ptr_ch(char(0)))
+      call fcreate_chan_def2_states(ptr_ch(char(0)))
 c
       call fcreate_chan_def2(ptr_ch('S'//char(0)),
      &                      ptr_ch('2500.99'//char(0)),
@@ -547,9 +547,9 @@ c
      &                      ptr_ch('BBCa'//char(0)),
      &                      ptr_ch('USB_CAL'//char(0)),
      &                      ptr_ch(char(0)))
-      call fcreate_chan_def_states2(ptr_ch('1'//char(0)))
-      call fcreate_chan_def_states2(ptr_ch('2'//char(0)))
-      call fcreate_chan_def_states2(ptr_ch(char(0)))
+      call fcreate_chan_def2_states(ptr_ch('1'//char(0)))
+      call fcreate_chan_def2_states(ptr_ch('2'//char(0)))
+      call fcreate_chan_def2_states(ptr_ch(char(0)))
 c
       call fcreate_chan_def2(ptr_ch('S'//char(0)),
      &                      ptr_ch('2500.99'//char(0)),
@@ -561,9 +561,9 @@ c
      &                      ptr_ch('BBCa'//char(0)),
      &                      ptr_ch(char(0)),
      &                      ptr_ch('name'//char(0)))
-      call fcreate_chan_def_states2(ptr_ch('1'//char(0)))
-      call fcreate_chan_def_states2(ptr_ch('2'//char(0)))
-      call fcreate_chan_def_states2(ptr_ch(char(0)))
+      call fcreate_chan_def2_states(ptr_ch('1'//char(0)))
+      call fcreate_chan_def2_states(ptr_ch('2'//char(0)))
+      call fcreate_chan_def2_states(ptr_ch(char(0)))
       call fend_def
 c
       call fcreate_block(ptr_ch('IF'//char(0)))

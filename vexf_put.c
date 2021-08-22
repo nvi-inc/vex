@@ -460,13 +460,13 @@ char **str3;
 /* ----------------------------------------------------------------------- */
 void
 #ifdef F2C
-fcreate_source_stations2__
+fcreate_source2_stations__
 #else
-fcreate_source_stations2
+fcreate_source2_stations
 #endif
 (str)
 char **str;
-/*<      subroutine fcreate_source_stations2(ptr_ch(str)//(char *)0) >*/
+/*<      subroutine fcreate_source2_stations(ptr_ch(str)//(char *)0) >*/
 /*<      implicit none >*/
 /*<      character*(*) str; >*/
 
@@ -480,7 +480,7 @@ char **str;
 /* */
 {
 
-  create_source_stations2(*str);
+  create_source2_stations(*str);
   return;
 }
 /* ----------------------------------------------------------------------- */
@@ -3283,13 +3283,13 @@ char **str10;
 /* ----------------------------------------------------------------------- */
 void
 #ifdef F2C
-fcreate_chan_def_states2__
+fcreate_chan_def2_states__
 #else
-fcreate_chan_def_states2
+fcreate_chan_def2_states
 #endif
 (str)
 char **str;
-/*<      subroutine fcreate_chan_def_states2(ptr_ch(str)//(char *)0) >*/
+/*<      subroutine fcreate_chan_def2_states(ptr_ch(str)//(char *)0) >*/
 /*<      implicit none >*/
 /*<      character*(*) str; >*/
 
@@ -3303,7 +3303,7 @@ char **str;
 /* */
 {
 
-  create_chan_def_states2(*str);
+  create_chan_def2_states(*str);
   return;
 }
 /* ----------------------------------------------------------------------- */

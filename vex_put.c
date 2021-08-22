@@ -505,7 +505,7 @@ create_source2(char *str, char *str2, char *str3)
 }
 /*-------------------------------------------------------------------*/
 void
-create_source_stations2(char *str)
+create_source2_stations(char *str)
 {
   void *s1, *s2, *s3, *s4;
 
@@ -2691,7 +2691,7 @@ create_chan_def2(char *str, char *str2, char *str3, char *str4,
 }
 /*-------------------------------------------------------------------*/
 void
-create_chan_def_states2(char *str)
+create_chan_def2_states(char *str)
 {
   char *s1, *s2, *s3, *s4, *s5, *s6, *s7, *s8, *s9, *s10, *s11;
 
