@@ -28,7 +28,6 @@
 
 extern FILE * yyin;
 extern struct vex *vex_ptr;
-extern struct vex_version vex_version;
 
 /*---------------------------------------------------------------------------*/
 int vex_open(const char *name, struct vex **vex)
@@ -1177,7 +1176,7 @@ get_a_literal(struct llist *literals, char **text)
   return literals->next;
 }
 /*---------------------------------------------------------------------------*/
-void 
+void
 get_all_literals(struct llist *literals, char *array[])
 {
   int i=0;

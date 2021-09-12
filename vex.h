@@ -623,6 +623,15 @@ struct fanout_def {
 
 typedef struct fanout_def Fanout_def;
 
+struct vlba_frmtr_sys_trk {
+  struct dvalue *output;
+  char *use;
+  struct dvalue *start;
+  struct dvalue *stop;
+};
+
+typedef struct vlba_frmtr_sys_trk Vlba_frmtr_sys_trk;
+
 struct format_def {
   char* format;
   char* extendedformat;
@@ -649,16 +658,6 @@ struct channel_def {
   struct dvalue* channelnr;
 };
 typedef struct channel_def Channel_def;
-
-
-struct vlba_frmtr_sys_trk {
-  struct dvalue *output;
-  char *use;
-  struct dvalue *start;
-  struct dvalue *stop;
-};
-
-typedef struct vlba_frmtr_sys_trk Vlba_frmtr_sys_trk;
 
 /* prototypes */
 

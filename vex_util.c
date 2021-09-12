@@ -83,6 +83,9 @@ static int
 get_bbc_assign_field(Bbc_assign *bbc_assign,int n,int *link,
 			  int *name, char **value, char **units);
 static int
+get_stream_def_field(Stream_def *stream_def,int n,int *link,
+			  int *name, char **value, char **units);
+static int
 get_stream_sample_rate_field(Stream_sample_rate *stream_sample_rate,int n,int *link,
 			  int *name, char **value, char **units);
 static int
@@ -229,9 +232,6 @@ get_fanin_def_field(Fanin_def *fanin_def,int n,int *link,
 	      int *name, char **value, char **units);
 static int
 get_fanout_def_field(Fanout_def *fanout_def,int n,int *link,
-	      int *name, char **value, char **units);
-static int
-get_stream_def_field(Stream_def *stream_def,int n,int *link,
 	      int *name, char **value, char **units);
 static int
 get_bitstream_list_field(Llist *list,int n,int *link,int *name,
@@ -1377,6 +1377,32 @@ struct fanout_def *make_fanout_def(char *subpass, struct llist *bitstream,
   return new;
 }
 
+struct vlba_frmtr_sys_trk *make_vlba_frmtr_sys_trk(struct dvalue *output,
+						   char *use,
+						   struct dvalue *start,
+						   struct dvalue *stop)
+{
+  NEWSTRUCT(new,vlba_frmtr_sys_trk);
+
+  new->output=output;
+  new->use=use;
+  new->start=start;
+  new->stop=stop;
+
+  return new;
+}
+struct s2_data_source *make_s2_data_source(char *source,char *bbcx_id,
+					   char *bbcy_id)
+{
+  NEWSTRUCT(new,s2_data_source);
+ 
+  new->source=source;
+  new->bbcx_id=bbcx_id;
+  new->bbcy_id=bbcy_id;
+
+  return new;
+}
+    
 struct format_def* make_format_def(char* format,
 				   char* extendedformat,
 				   struct dvalue* datarate)
@@ -1428,33 +1454,6 @@ struct channel_def* make_channel_def(char* chanid,
 
   return new;
 }
-
-struct vlba_frmtr_sys_trk *make_vlba_frmtr_sys_trk(struct dvalue *output,
-						   char *use,
-						   struct dvalue *start,
-						   struct dvalue *stop)
-{
-  NEWSTRUCT(new,vlba_frmtr_sys_trk);
-
-  new->output=output;
-  new->use=use;
-  new->start=start;
-  new->stop=stop;
-
-  return new;
-}
-struct s2_data_source *make_s2_data_source(char *source,char *bbcx_id,
-					   char *bbcy_id)
-{
-  NEWSTRUCT(new,s2_data_source);
- 
-  new->source=source;
-  new->bbcx_id=bbcx_id;
-  new->bbcy_id=bbcy_id;
-
-  return new;
-}
-    
 
 int
 lowl2int(char *lowl)
