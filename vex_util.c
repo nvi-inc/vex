@@ -243,6 +243,15 @@ static int
 get_s2_data_source_field(S2_data_source *s2_data_source,int n,int *link,
 			  int *name, char **value, char **units);
 static int
+get_format_def_field(Format_def *format_def,int n,int *link,
+			  int *name, char **value, char **units);
+static int
+get_thread_def_field(Thread_def *thread_def,int n,int *link,
+			  int *name, char **value, char **units);
+static int
+get_channel_def_field(Channel_def *channel_def,int n,int *link,
+			  int *name, char **value, char **units);
+static int
 get_dvalue_field(Dvalue *dvalue,int n,int *link,int *name, char **value,
 		 char **units);
 static int
@@ -1810,6 +1819,15 @@ char **units)
     break;
   case T_S2_DATA_SOURCE:
     ierr=get_s2_data_source_field(ptr,n,link,name,value,units);
+    break;
+  case T_FORMAT_DEF:
+    ierr=get_format_def_field(ptr,n,link,name,value,units);
+    break;
+  case T_THREAD_DEF:
+    ierr=get_thread_def_field(ptr,n,link,name,value,units);
+    break;
+  case T_CHANNEL_DEF:
+    ierr=get_channel_def_field(ptr,n,link,name,value,units);
     break;
   case T_LITERAL:
     ierr=get_svalue_list_field(ptr,n,link,name,value,units);
@@ -3989,6 +4007,126 @@ get_s2_data_source_field(S2_data_source *s2_data_source,int n,int *link,
       return -1;
     *value=s2_data_source->bbcy_id;
     *link=1;
+    break;
+  default:
+    return -1;
+  }
+  return 0;
+}
+static int
+get_format_def_field(Format_def *format_def,int n,int *link,
+			  int *name, char **value, char **units)
+{
+  *link=0;
+  *name=1;
+  *units=NULL;
+  *value=NULL;
+
+  switch(n) {
+  case 1:
+    *value=format_def->format;
+    break;
+  case 2:
+    *value=format_def->extendedformat;
+    break;
+  case 3:
+    if(format_def->datarate==NULL)
+      return 0;
+    *value=format_def->datarate->value;
+    *units=format_def->datarate->units;
+    *name=0;
+    break;
+  default:
+    return -1;
+  }
+  return 0;
+}
+static int
+get_thread_def_field(Thread_def *thread_def,int n,int *link,
+			  int *name, char **value, char **units)
+{
+  *link=0;
+  *name=1;
+  *units=NULL;
+  *value=NULL;
+
+  switch(n) {
+  case 1:
+    *value=thread_def->threadnr->value;
+    *units=thread_def->threadnr->units;
+    *name=0;
+    break;
+  case 2:
+    *value=thread_def->backendnr->value;
+    *units=thread_def->backendnr->units;
+    *name=0;
+    break;
+  case 3:
+    *value=thread_def->recordernr->value;
+    *units=thread_def->recordernr->units;
+    *name=0;
+    break;
+  case 4:
+    *value=thread_def->datarate->value;
+    *units=thread_def->datarate->units;
+    *name=0;
+    break;
+  case 5:
+    *value=thread_def->numchan->value;
+    *units=thread_def->numchan->units;
+    *name=0;
+    break;
+  case 6:
+    *value=thread_def->bitspersample->value;
+    *units=thread_def->bitspersample->units;
+    *name=0;
+    break;
+  case 7:
+    if(thread_def->format == NULL)
+      return 0;
+    *value=thread_def->format;
+    break;
+  case 8:
+    if(thread_def->extendedformat == NULL)
+      return 0;
+    *value=thread_def->extendedformat;
+    break;
+  case 9:
+    if(thread_def->bytesperpacket == NULL)
+      return 0;
+    *value=thread_def->extendedformat;
+    *value=thread_def->bytesperpacket->value;
+    *units=thread_def->bytesperpacket->units;
+    *name=0;
+    break;
+  default:
+    return -1;
+  }
+  return 0;
+}
+static int
+get_channel_def_field(Channel_def *channel_def,int n,int *link,
+			  int *name, char **value, char **units)
+{
+  *link=0;
+  *name=1;
+  *units=NULL;
+  *value=NULL;
+
+  switch(n) {
+  case 1:
+    *value=channel_def->chanid;
+    *link=1;
+    break;
+  case 2:
+    *value=channel_def->threadnr->value;
+    *units=channel_def->threadnr->units;
+    *name=0;
+    break;
+  case 3:
+    *value=channel_def->channelnr->value;
+    *units=channel_def->channelnr->units;
+    *name=0;
     break;
   default:
     return -1;
