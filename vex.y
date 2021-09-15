@@ -2024,12 +2024,24 @@ threads_lowl:
 format_def:
     T_FORMAT_DEF '=' T_NAME ':' optional_name ':' optional_value ';'
 					{$$=make_format_def($3, $5, $7);}
+    | T_FORMAT_DEF '=' T_NAME ':' optional_name ';'
+					{$$=make_format_def($3, $5, NULL);}
+    | T_FORMAT_DEF '=' T_NAME ';'
+					{$$=make_format_def($3, NULL, NULL);}
 ;
 /*                           thrd      backend   recorder  rate      nchan     bits/sample */
 thread_def: T_THREAD_DEF '=' value ':' value ':' value ':' value ':' value ':' value ':'
 /*              format            extended          bytesperpacket */
                 optional_name ':' optional_name ':' optional_value ';'
 					{$$=make_thread_def($3, $5, $7, $9, $11, $13, $15, $17, $19);}
+     | T_THREAD_DEF '=' value ':' value ':' value ':' value ':' value ':' value ':'
+                optional_name ':' optional_name ';'
+					{$$=make_thread_def($3, $5, $7, $9, $11, $13, $15, $17, NULL);}
+     | T_THREAD_DEF '=' value ':' value ':' value ':' value ':' value ':' value ':'
+                optional_name ';'
+					{$$=make_thread_def($3, $5, $7, $9, $11, $13, $15, NULL, NULL);}
+     | T_THREAD_DEF '=' value ':' value ':' value ':' value ':' value ':' value ';'
+					{$$=make_thread_def($3, $5, $7, $9, $11, $13, NULL, NULL, NULL);}
 ;
 
 channel_def: T_CHANNEL_DEF '=' T_LINK /*T_NAME*/ ':' value ':' value ';'
