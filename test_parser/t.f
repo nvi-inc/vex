@@ -29,7 +29,7 @@ c
       integer fget_global_lowl,fget_source_lowl,fget_scan_station
       integer fvex_scan_source
       integer fvex_double,fvex_date,fvex_int,fvex_ra,fvex_dec
-      integer fvex_scan_source2, fget_vex_rev
+      integer fvex_scan_source2, fget_vex_rev, fvex_scan_intent
 c
       ierr=fvex_open(ptr_ch("wh2"//char(0)),vex)
 
@@ -374,6 +374,42 @@ c
       write(6,*) "int= ",int
 
       enddo
+      ierr=fget_scan_station(ptr_ch(buffer),len(buffer),
+     &     ptr_ch(mode),len(mode),ptr_ch(scanid),len(scanid),
+     &     ptr_ch("EF"//char(0)),vex)
+
+      write(6,*) "ierr from fget_scan_station=",ierr
+      write(6,*) "start=",buffer(1:fvex_len(buffer))
+      write(6,*) "mode =",mode(1:fvex_len(mode))
+      write(6,*) "scanid=",scanid(1:fvex_len(scanid))
+
+      ierr=fvex_date(ptr_ch(buffer),iarray,seconds)
+      write(6,*) "ierr from fvex_date=",ierr
+      write(6,*) "iarray = ", iarray, " seconds=",seconds
+
+      do i=1,9
+      ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+      write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+      if(ierr.eq.0)
+     &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+      ierr=fvex_units(ptr_ch(units),len(units))
+      write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+      if(ierr.eq.0) then
+         write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+         ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+         write(6,*) " ierr from fvex_double=",ierr," doube=",double
+      endif
+
+      ierr=fvex_int(ptr_ch(buffer),int)
+      write(6,*) "ierr from fvex_int=",ierr
+      write(6,*) "int= ",int
+
+      enddo
 
       do i=1,3
       ierr=fvex_scan_source(i,ptr_ch(buffer),len(buffer))
@@ -382,6 +418,21 @@ c
       if(ierr.eq.0)
      &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      & "' len=",fvex_len(buffer)
+      enddo
+c
+      do j=1,3
+         ierr=fvex_scan_intent(j)
+         WRITE(6,*) ' IERR FROM FVEX_SCAN_INTENT=',IERr
+         if(ierr.eq.0) then
+            do i=1,4
+               ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+               write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+               if(ierr.eq.0)
+     &            write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &           "' len=",fvex_len(buffer)
+            enddo
+         endif
       enddo
 c
       ierr=fget_source_lowl(ptr_ch("HD123456"//char(0)),
