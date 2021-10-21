@@ -1216,7 +1216,7 @@ integer *n;
 /*<       implicit none >*/
 /*<       integer n >*/
 
-/* Returns a source from a station scan using the */
+/* Returns an intent from a scan using the */
 /*    get_scan_intent() routine. */
 
 /* input: */
@@ -1260,8 +1260,8 @@ integer *n;
 /*<       implicit none >*/
 /*<       integer n >*/
 
-/* Returns a source from a station scan using the */
-/*    get_scan_scan_source2() routine. */
+/* Returns a source from a scan using the */
+/*    get_scan_source2() routine. */
 
 /* input: */
 /*   integer n                - source parameter to return */
@@ -1302,12 +1302,12 @@ fvex_scan_source
 integer *n;
 char **src;
 integer *src_len;
-/*<       integer function fvex_src_field(n,ptr_ch(src),len(src)) >*/
+/*<       integer function fvex_scan_source(n,ptr_ch(src),len(src)) >*/
 /*<       implicit none >*/
 /*<       integer n >*/
 /*<       character*(*) src >*/
 
-/* Returns a source field from a station statement located using the */
+/* Returns a source from a scan located using the */
 /*    get_scan_station_lowl() routine. */
 
 /* input: */
