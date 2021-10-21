@@ -120,6 +120,46 @@ ldone:
 }
 /*---------------------------------------------------------------------------*/
 void *
+get_scan_intent_next()
+{
+  return get_scan_intent(NULL);
+}
+/*---------------------------------------------------------------------------*/
+void *
+get_scan_intent(Llist *lowls_scan_in)
+{
+  Llist *lowls_this;
+
+  static Llist *lowls;
+
+  static int state=FALSE;
+
+  if(lowls_scan_in==NULL && !state)
+     return NULL;
+
+  if(lowls_scan_in!=NULL) {
+    lowls=lowls_scan_in;
+    state=FALSE;
+  }
+
+  lowls=find_lowl(lowls,T_INTENT);
+  if(lowls==NULL)
+    goto ldone;
+
+  state=TRUE;
+
+  lowls_this=lowls;
+  lowls=lowls->next;
+
+  return ((Lowl *)lowls_this->ptr)->item;
+
+
+ldone:
+  state=FALSE;
+  return NULL;
+}
+/*---------------------------------------------------------------------------*/
+void *
 get_scan_source_next()
 {
   return get_scan_source(NULL);

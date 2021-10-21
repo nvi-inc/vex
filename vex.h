@@ -1003,6 +1003,12 @@ void *
 get_scan_source2(Llist *lowls_scan_in);
 
 void *
+get_scan_intent_next();
+
+void *
+get_scan_intent(Llist *lowls_scan_in);
+
+void *
 get_scan_station_next(Llist **lowls_scan, char **scanid);
 
 void *
