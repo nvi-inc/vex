@@ -1250,6 +1250,50 @@ integer *n;
 /* ----------------------------------------------------------------------- */
 integer
 #ifdef F2C
+fvex_scan_pointing_offset__
+#else
+fvex_scan_pointing_offset
+#endif
+(n)
+integer *n;
+/*<       integer function fvex_scan_pointing_offset(n) >*/
+/*<       implicit none >*/
+/*<       integer n >*/
+
+/* Returns a pointing_ofset from a scan using the */
+/*    get_scan_pointing_offset() routine. */
+
+/* input: */
+/*   integer n                - source parameter to return */
+
+/* output: */
+/*   integer (return value)    - error code, zero indicates no error */
+/*                               -6 = n out of range */
+
+/* When this routine does not return an error, the fields can be accessed */
+/*   using fvex_field. */
+
+{
+  int i;
+
+  if (*n < 1)
+    return -6;
+
+  save_type=T_POINTING_OFFSET;
+  save_ptr=get_scan_pointing_offset(save_lowls);
+  for (i=1;i < *n && save_ptr!= NULL;i++)
+    save_ptr=get_scan_pointing_offset_next();
+
+  if(save_ptr==NULL)
+    return -6;
+
+  return 0;
+
+}
+
+/* ----------------------------------------------------------------------- */
+integer
+#ifdef F2C
 fvex_scan_source2__
 #else
 fvex_scan_source2

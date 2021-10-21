@@ -30,6 +30,7 @@ c
       integer fvex_scan_source
       integer fvex_double,fvex_date,fvex_int,fvex_ra,fvex_dec
       integer fvex_scan_source2, fget_vex_rev, fvex_scan_intent
+      integer fvex_scan_pointing_offset
 c
       ierr=fvex_open(ptr_ch("wh2"//char(0)),vex)
 
@@ -431,6 +432,29 @@ c
                if(ierr.eq.0)
      &            write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
      &           "' len=",fvex_len(buffer)
+            enddo
+         endif
+      enddo
+c
+      do j=1,3
+         ierr=fvex_scan_pointing_offset(j)
+         WRITE(6,*) ' IERR FROM FVEX_SCAN_POINTING_OFFSET=',IERr
+         if(ierr.eq.0) then
+            do i=1,9
+               ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+               write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+               if(ierr.eq.0) then
+                  write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &           "' len=",fvex_len(buffer)
+                  ierr=fvex_units(ptr_ch(units),len(units))
+                  write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+                  if(ierr.eq.0) then
+                     write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+                  endif
+               endif
             enddo
          endif
       enddo

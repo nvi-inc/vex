@@ -1009,6 +1009,12 @@ void *
 get_scan_intent(Llist *lowls_scan_in);
 
 void *
+get_scan_pointing_offset_next();
+
+void *
+get_scan_pointing_offset(Llist *lowls_scan_in);
+
+void *
 get_scan_station_next(Llist **lowls_scan, char **scanid);
 
 void *

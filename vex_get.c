@@ -160,6 +160,46 @@ ldone:
 }
 /*---------------------------------------------------------------------------*/
 void *
+get_scan_pointing_offset_next()
+{
+  return get_scan_pointing_offset(NULL);
+}
+/*---------------------------------------------------------------------------*/
+void *
+get_scan_pointing_offset(Llist *lowls_scan_in)
+{
+  Llist *lowls_this;
+
+  static Llist *lowls;
+
+  static int state=FALSE;
+
+  if(lowls_scan_in==NULL && !state)
+     return NULL;
+
+  if(lowls_scan_in!=NULL) {
+    lowls=lowls_scan_in;
+    state=FALSE;
+  }
+
+  lowls=find_lowl(lowls,T_POINTING_OFFSET);
+  if(lowls==NULL)
+    goto ldone;
+
+  state=TRUE;
+
+  lowls_this=lowls;
+  lowls=lowls->next;
+
+  return ((Lowl *)lowls_this->ptr)->item;
+
+
+ldone:
+  state=FALSE;
+  return NULL;
+}
+/*---------------------------------------------------------------------------*/
+void *
 get_scan_source_next()
 {
   return get_scan_source(NULL);
