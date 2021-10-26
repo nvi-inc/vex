@@ -345,6 +345,7 @@ $GLOBAL; *global default parameters
     ref $PROCEDURES = STANDARD1; *general-procedure timing parameters
     ref $EOP = EOP129; *earth-orientation parameters
     ref $DAS = VEX2; *test vex2 features including equip_set
+    ref $EXTENSIONS = vex2; *global example
 *
 *----------------------------------------------------------------------------------------------------------------------
 $STATION; *station parameters
@@ -400,6 +401,7 @@ $STATION; *station parameters
     ref $PHASE_CAL_DETECT = STANDARD;
     ref $CLOCK = EF;
     ref $TAPELOG_OBS = EF;
+    ref $EXTENSIONS = EF;
   enddef;
 * 
   def FD;
@@ -525,6 +527,7 @@ $MODE; *data and recording parameters
     ref $ROLL = VLBA/16;
     ref $PROCEDURES = VLBA_CAL;
     ref $DAS = CONTINUOUS;
+    ref $EXTENSIONS = SX_VLBA;
   enddef;
 *
 *----------------------------------------------------------------------------------------------------------------------
@@ -1105,6 +1108,12 @@ $EXPER; *general experiment information
 $EXTENSIONS; *extensions
   def vex2;
     extension = nrao : setting : 1 sec : 2 : 3 m;
+  enddef;
+  def EF;
+    extension = ef : setting2 : 2 sec : 4 : 6 m;
+  enddef;
+  def SX_VLBA;
+    extension = sx_vlba : setting3 : 8 sec : 10 : 12 m;
   enddef;
 *
 *----------------------------------------------------------------------------------------------------------------------

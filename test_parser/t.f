@@ -101,6 +101,8 @@ c
             write(6,*)"fvex_len(buffer)=",lenn
          endif
       enddo
+C
+C test all lowl
 c
       ierr=fget_all_lowl(ptr_ch("EF"//char(0)),ptr_ch("SX"//char(0)),
      &     ptr_ch("chan_def"//char(0)),ptr_ch("FREQ"//char(0)),vex)
@@ -124,6 +126,44 @@ c
          write(6,*) " ierr from fvex_double=",ierr," doube=",double
       endif
       enddo
+C
+      do j=1,4
+      if(j.eq.1) then
+      ierr=fget_all_lowl(ptr_ch("EF"//char(0)),
+     &    ptr_ch("SX_VLBA"//char(0)),
+     &     ptr_ch("extension"//char(0)),
+     &     ptr_ch("EXTENSIONS"//char(0)),vex)
+      else
+      ierr=fget_all_lowl(ptr_ch("EF"//char(0)),ptr_ch("SX"//char(0)),
+     &     ptr_ch("extension"//char(0)),
+     &     ptr_ch("EXTENSIONS"//char(0)),0)
+      endif
+      write(6,*) "ierr from fget_all_lowl EXTENSIONS =",ierr
+
+      if(ierr.eq.0) then
+      do i=1,9
+      ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+      write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+      if(ierr.eq.0) then
+      write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+      ierr=fvex_units(ptr_ch(units),len(units))
+      write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+      if(ierr.eq.0) then
+         write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+         ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+         write(6,*) " ierr from fvex_double=",ierr," doube=",double
+      endif
+      endif
+      enddo
+      endif
+      enddo
+C
+C test mode lowl
 c
       ierr=fget_mode_lowl(ptr_ch("JB"//char(0)),
      &     ptr_ch("SX_VLBA"//char(0)),
@@ -148,6 +188,33 @@ c
          write(6,*) " ierr from fvex_double=",ierr," doube=",double
       endif
       enddo
+c
+      ierr=fget_mode_lowl(ptr_ch("JB"//char(0)),
+     &     ptr_ch("SX_VLBA"//char(0)),
+     &     ptr_ch("extension"//char(0)),
+     &     ptr_ch("EXTENSIONS"//char(0)),vex)
+      write(6,*) "ierr from fget_mode_lowl EXTENSIONS=",ierr
+
+      do i=1,9
+      ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+      write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+      if(ierr.eq.0)
+     &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+      ierr=fvex_units(ptr_ch(units),len(units))
+      write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+      if(ierr.eq.0) then
+         write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+         ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+         write(6,*) " ierr from fvex_double=",ierr," doube=",double
+      endif
+      enddo
+C
+C station lowls
 C
       ierr=fget_station_lowl(ptr_ch("EF"//char(0)),
      &     ptr_ch("site_position"//char(0)),ptr_ch("SITE"//char(0)),vex)
@@ -172,6 +239,7 @@ C
       endif
 
       enddo
+C
       ierr=fget_station_lowl(ptr_ch("EF"//char(0)),
      &     ptr_ch("antenna_motion"//char(0)),ptr_ch("ANTENNA"//char(0)),
      &     vex)
@@ -196,10 +264,61 @@ C
       endif
 
       enddo
+      ierr=fget_station_lowl(ptr_ch("EF"//char(0)),
+     &     ptr_ch("extension"//char(0)),ptr_ch("EXTENSIONS"//char(0)),
+     &     vex)
+      write(6,*) "ierr from fget_station_lowl for EF EXTENSIONS=",ierr
+
+      do i=1,9
+      ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+      write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+      if(ierr.eq.0)
+     &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+      ierr=fvex_units(ptr_ch(units),len(units))
+      write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+      if(ierr.eq.0) then
+         write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+         ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+         write(6,*) " ierr from fvex_double=",ierr," doube=",double
+      endif
+
+      enddo
+C
+C  test global lowl
 C
       ierr=fget_global_lowl(
      &     ptr_ch("x_wobble"//char(0)),ptr_ch("EOP"//char(0)),vex)
       write(6,*) "ierr from fget_global_lowl=",ierr
+
+      do i=1,9
+      ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+      write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+      if(ierr.eq.0)
+     &write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+      ierr=fvex_units(ptr_ch(units),len(units))
+      write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+      if(ierr.eq.0) then
+         write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+         ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+         write(6,*) " ierr from fvex_double=",ierr," doube=",double
+      endif
+
+      enddo
+c
+      ierr=fget_global_lowl(
+     &     ptr_ch("extension"//char(0)),
+     &     ptr_ch("EXTENSIONS"//char(0)),vex)
+      write(6,*) "ierr from fget_global_lowl EXTENSION=",ierr
 
       do i=1,9
       ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
