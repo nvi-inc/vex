@@ -221,6 +221,41 @@ C
 
       enddo
 c
+      do j=1,4
+      if(j.eq.1) then
+      ierr=fget_global_lowl(
+     &     ptr_ch("equip_set"//char(0)),
+     &     ptr_ch("DAS"//char(0)),vex)
+      else
+      ierr=fget_global_lowl(
+     &     ptr_ch("equip_set"//char(0)),
+     &     ptr_ch("DAS"//char(0)),0)
+      endif
+      write(6,*) "ierr from fget_global_lowl DAS=",ierr
+
+      if(ierr.eq.0) then
+      do i=1,9
+      ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+      write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+      if(ierr.eq.0) then
+      write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     & "' len=",fvex_len(buffer)
+
+      ierr=fvex_units(ptr_ch(units),len(units))
+      write(6,*) "i=",i," ierr from fvex_units=",ierr
+
+      if(ierr.eq.0) then
+         write(6,*) "units='",units(1:fvex_len(units)),
+     &        "' len=",fvex_len(units)
+         ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+         write(6,*) " ierr from fvex_double=",ierr," doube=",double
+      endif
+      endif
+      enddo
+      endif
+      enddo
+c
       ierr=fget_source_lowl(ptr_ch("HD123456"//char(0)),
      & ptr_ch("source_model"//char(0)),vex)
       write(6,*) "ierr from fget_source_lowl=",ierr

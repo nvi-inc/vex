@@ -352,11 +352,26 @@ c
       call fcreate_lvalue_list(ptr_ch('RBEA3'//char(0)))
       call fcreate_composite_equip(ptr_ch('RBEA'//char(0)))
 
-      call fcreate_svalue_list(ptr_ch('on'//char(0)))
+      call fcreate_dvalue_list(ptr_ch('on'//char(0)),
+     &     ptr_ch(char(0)) )
       call fcreate_equip_set(ptr_ch('RBEA'//char(0)),
      &                       ptr_ch('AGC'//char(0)))
-      call fcreate_svalue_list(ptr_ch('on'//char(0)))
-      call fcreate_svalue_list(ptr_ch('on1'//char(0)))
+      call fcreate_dvalue_list(ptr_ch('on'//char(0)),
+     &     ptr_ch(char(0)) )
+      call fcreate_dvalue_list(ptr_ch('on'//char(0)),
+     &     ptr_ch(char(0)) )
+      call fcreate_dvalue_list(ptr_ch('on1'//char(0)),
+     &     ptr_ch(char(0)) )
+      call fcreate_equip_set(ptr_ch('RBEA'//char(0)),
+     &                       ptr_ch('AGC'//char(0)))
+      call fcreate_dvalue_list(ptr_ch('G'//char(0)),
+     &     ptr_ch(char(0)) )
+      call fcreate_dvalue_list(ptr_ch('1'//char(0)),
+     &     ptr_ch('meters'//char(0)) )
+      call fcreate_dvalue_list(ptr_ch('2'//char(0)),
+     &     ptr_ch(char(0)) )
+      call fcreate_dvalue_list(ptr_ch('3'//char(0)),
+     &     ptr_ch('GHz'//char(0)) )
       call fcreate_equip_set(ptr_ch('RBEA'//char(0)),
      &                       ptr_ch('AGC'//char(0)))
       call fcreate_svalue_list(ptr_ch('G'//char(0)))

@@ -993,7 +993,7 @@ composite_equip: T_COMPOSITE_EQUIP '=' T_LINK ':' T_LINK ':' T_LINK ';'
                  | T_COMPOSITE_EQUIP '=' T_LINK ':' T_LINK ':' T_LINK ':' link_list ';'
                  {$$=make_composite_equip($3,ins_list($5,ins_list($7,$9)));}
 ;
-equip_set:      T_EQUIP_SET '=' T_LINK ':' T_NAME ':' name_list ';'
+equip_set:      T_EQUIP_SET '=' T_LINK ':' T_NAME ':' unit_more ';'
                 {$$=make_equip_set($3,$5,$7);}
 ;
 equip_info:     T_EQUIP_INFO '=' T_LINK ':' T_NAME ':' name_list ';'

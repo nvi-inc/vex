@@ -2649,7 +2649,7 @@ get_equip_set_field(Equip_set *equip_set,int n,int *link,
   default:
     if(n < 1 )
       return -1;
-    ierr=get_svalue_list_field(equip_set->settings,n-2,link,name,value,units);
+    ierr=get_dvalue_list_field(equip_set->settings,n-2,link,name,value,units);
     if(ierr==-1)
       return -1;
     else if (ierr!=0) {

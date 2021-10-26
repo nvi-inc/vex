@@ -344,6 +344,7 @@ $GLOBAL; *global default parameters
     ref $SCHEDULING_PARAMS = SKED1; *choose scheduling program/parameters
     ref $PROCEDURES = STANDARD1; *general-procedure timing parameters
     ref $EOP = EOP129; *earth-orientation parameters
+    ref $DAS = VEX2; *test vex2 features including equip_set
 *
 *----------------------------------------------------------------------------------------------------------------------
 $STATION; *station parameters
@@ -955,7 +956,8 @@ $DAS; *data-acquisition system parameters
     composite_equip = &RDBEB : &RDBEB1 : &RDBEB2 : &RDBEB3;
     composite_equip = &RDBEC : &RDBEC1 : &RDBEC2 : &RDBEC3 : &RDBEC4;
     equip_set = &RDBEA : AGC : on;
-    equip_set = &RDBEA : AGC : on : on2;
+    equip_set = &RDBEB : AGC : on : on2;
+    equip_set = &RDBEC : AGC : 1 seconds : 2 : 3 meters;
     equip_info = &RDBEA : model : G;
     equip_info = &RDBEA : version : 1 : 2;
     connection = &vdif : &rdbea : out1;
