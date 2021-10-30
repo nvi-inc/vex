@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   stat_c[2] = '\0';
 
 
-printf("Parsed OK - finding scan\n");  
+printf("Parsed OK - finding scan\n");
   ptr = get_scan_station(&lowl, &scanname, stat_c, vex );
 printf("gotit, scanname=%p\n", (void*)scanname);
 if( scanname )
@@ -65,10 +65,10 @@ if( scanname )
 	while( ptr2 ) {
 		printf("  name='%s'\n", (char*)ptr2);
         ptr2 = get_scan_source_next();
-  	}
+	}
     ptr = get_scan_station_next(&lowl, &scanname);
     if( scanname )
-     	printf("   = '%s'\n", scanname);
+	printf("   = '%s'\n", scanname);
   }
 
   return 0;
