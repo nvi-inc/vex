@@ -2,7 +2,7 @@
 YACC=bison
 YFLAGS=-d -y
 LEX=flex
-OBJECTS=vex.o vexf.o vexf_put.o vex.yy.o vex_util.o print_vex.o vex_get.o vex_put.o
+OBJECTS=vex.o vexf_get.o vexf_put.o vex.yy.o vex_util.o print_vex.o vex_get.o vex_put.o
 CC=gcc
 #
 # F2C needs this others don't
