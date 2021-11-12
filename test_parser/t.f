@@ -30,7 +30,8 @@ c
       integer fvex_scan_source
       integer fvex_double,fvex_date,fvex_int,fvex_ra,fvex_dec
       integer fvex_scan_source2, fget_vex_rev, fvex_scan_intent
-      integer fvex_scan_pointing_offset
+      integer fvex_scan_pointing_offset,fget_station_scan
+      integer fget_scan
 c
       ierr=fvex_open(ptr_ch("wh2"//char(0)),vex)
 
@@ -720,6 +721,140 @@ c
      &     ptr_ch("exper_name"//char(0)),
      &     ptr_ch("EXPER"//char(0)),0)
       write(6,*) "ierr from fget_global_lowl=",ierr
+      enddo
+c
+c first scan
+c
+      ierr=fget_scan(ptr_ch(buffer),len(buffer),
+     &     ptr_ch(mode),len(mode),ptr_ch(scanid),len(scanid),
+     &     vex)
+      write(6,*) "ierr from fget_scan=",ierr
+      write(6,*) "start =",buffer(1:fvex_len(buffer))
+      write(6,*) "mode  =",mode(1:fvex_len(mode))
+      write(6,*) "scanid=",scanid(1:fvex_len(scanid))
+c
+      do j=1,3
+       ierr=fget_station_scan(j)
+       write(6,*) "ierr from fget_station_scan=",ierr
+       if(ierr.eq.0) then
+        do i=1,9
+         ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+         write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+         if(ierr.eq.0) then
+          write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &     "' len=",fvex_len(buffer)
+          ierr=fvex_units(ptr_ch(units),len(units))
+          write(6,*) "i=",i," ierr from fvex_units=",ierr
+          if(ierr.eq.0) then
+           write(6,*) "units='",units(1:fvex_len(units)),
+     &      "' len=",fvex_len(units)
+           ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+           write(6,*) "i=",i," ierr from fvex_double=",ierr
+           if(ierr.eq.0) then
+             write(6,*) " double=",double
+           endif
+          endif
+         endif
+        enddo
+       endif
+      enddo
+c
+      do j=1,3
+       ierr=fvex_scan_source2(j)
+       WRITE(6,*) ' IERR FROM FVEX_SCAN_SOURCE2=',IERr
+       if(ierr.eq.0) then
+        do i=1,4
+         ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+         write(6,*) "i=",i," ierr from fvex_field=",ierr
+         if(ierr.eq.0) then
+          write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &     "' len=",fvex_len(buffer)
+         endif
+        enddo
+       endif
+      enddo
+c
+      do j=1,3
+       ierr=fvex_scan_intent(j)
+       WRITE(6,*) ' IERR FROM FVEX_SCAN_intent=',IERr
+       if(ierr.eq.0) then
+        do i=1,4
+         ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+         write(6,*) "i=",i," ierr from fvex_field=",ierr
+         if(ierr.eq.0) then
+          write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &     "' len=",fvex_len(buffer)
+         endif
+        enddo
+       endif
+      enddo
+c
+c second scan
+c
+      ierr=fget_scan(ptr_ch(buffer),len(buffer),
+     &     ptr_ch(mode),len(mode),ptr_ch(scanid),len(scanid),
+     &     0)
+      write(6,*) "ierr from fget_scan=",ierr
+      write(6,*) "start =",buffer(1:fvex_len(buffer))
+      write(6,*) "mode  =",mode(1:fvex_len(mode))
+      write(6,*) "scanid=",scanid(1:fvex_len(scanid))
+c
+      do j=1,3
+       ierr=fget_station_scan(j)
+       write(6,*) "ierr from fget_station_scan=",ierr
+       if(ierr.eq.0) then
+        do i=1,9
+         ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+         write(6,*) "i=",i," ierr from fvex_field=",ierr
+
+         if(ierr.eq.0) then
+          write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &     "' len=",fvex_len(buffer)
+          ierr=fvex_units(ptr_ch(units),len(units))
+          write(6,*) "i=",i," ierr from fvex_units=",ierr
+          if(ierr.eq.0) then
+           write(6,*) "units='",units(1:fvex_len(units)),
+     &      "' len=",fvex_len(units)
+           ierr=fvex_double(ptr_ch(buffer),ptr_ch(units),double)
+           write(6,*) "i=",i," ierr from fvex_double=",ierr
+           if(ierr.eq.0) then
+             write(6,*) " double=",double
+           endif
+          endif
+         endif
+        enddo
+       endif
+      enddo
+c
+      do j=1,3
+       ierr=fvex_scan_source2(j)
+       WRITE(6,*) ' IERR FROM FVEX_SCAN_SOURCE2=',IERr
+       if(ierr.eq.0) then
+        do i=1,4
+         ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+         write(6,*) "i=",i," ierr from fvex_field=",ierr
+         if(ierr.eq.0) then
+          write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &     "' len=",fvex_len(buffer)
+         endif
+        enddo
+       endif
+      enddo
+c
+      do j=1,3
+       ierr=fvex_scan_intent(j)
+       WRITE(6,*) ' IERR FROM FVEX_SCAN_intent=',IERr
+       if(ierr.eq.0) then
+        do i=1,4
+         ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
+         write(6,*) "i=",i," ierr from fvex_field=",ierr
+         if(ierr.eq.0) then
+          write(6,*) "buffer='",buffer(1:fvex_len(buffer)),
+     &     "' len=",fvex_len(buffer)
+         endif
+        enddo
+       endif
       enddo
 C
       end
