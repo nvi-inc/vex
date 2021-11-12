@@ -29,8 +29,8 @@ c
       integer fget_global_lowl,fget_source_lowl,fget_scan_station
       integer fvex_scan_source
       integer fvex_double,fvex_date,fvex_int,fvex_ra,fvex_dec
-      integer fvex_scan_source2, fget_vex_rev, fvex_scan_intent
-      integer fvex_scan_pointing_offset,fget_station_scan
+      integer fget_scan_source2, fget_vex_rev, fget_scan_intent
+      integer fget_scan_pointing_offset,fget_station_scan
       integer fget_scan
 c
       ierr=fvex_open(ptr_ch("wh2"//char(0)),vex)
@@ -453,8 +453,8 @@ c
       enddo
 
       do j=1,3
-         ierr=fvex_scan_source2(j)
-         WRITE(6,*) ' IERR FROM FVEX_SCAN_SOURCE2=',IERr
+         ierr=fget_scan_source2(j)
+         WRITE(6,*) ' IERR FROM FGET_SCAN_SOURCE2=',IERr
          if(ierr.eq.0) then
             do i=1,4
                ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
@@ -577,8 +577,8 @@ c
       enddo
 c
       do j=1,3
-         ierr=fvex_scan_intent(j)
-         WRITE(6,*) ' IERR FROM FVEX_SCAN_INTENT=',IERr
+         ierr=fget_scan_intent(j)
+         WRITE(6,*) ' IERR FROM FGET_SCAN_INTENT=',IERr
          if(ierr.eq.0) then
             do i=1,4
                ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
@@ -592,8 +592,8 @@ c
       enddo
 c
       do j=1,3
-         ierr=fvex_scan_pointing_offset(j)
-         WRITE(6,*) ' IERR FROM FVEX_SCAN_POINTING_OFFSET=',IERr
+         ierr=fget_scan_pointing_offset(j)
+         WRITE(6,*) ' IERR FROM FGET_SCAN_POINTING_OFFSET=',IERr
          if(ierr.eq.0) then
             do i=1,9
                ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
@@ -761,8 +761,8 @@ c
       enddo
 c
       do j=1,3
-       ierr=fvex_scan_source2(j)
-       WRITE(6,*) ' IERR FROM FVEX_SCAN_SOURCE2=',IERr
+       ierr=fget_scan_source2(j)
+       WRITE(6,*) ' IERR FROM FGET_SCAN_SOURCE2=',IERr
        if(ierr.eq.0) then
         do i=1,4
          ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
@@ -776,8 +776,8 @@ c
       enddo
 c
       do j=1,3
-       ierr=fvex_scan_intent(j)
-       WRITE(6,*) ' IERR FROM FVEX_SCAN_intent=',IERr
+       ierr=fget_scan_intent(j)
+       WRITE(6,*) ' IERR FROM FGET_SCAN_INTENT=',IERr
        if(ierr.eq.0) then
         do i=1,4
          ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
@@ -828,8 +828,8 @@ c
       enddo
 c
       do j=1,3
-       ierr=fvex_scan_source2(j)
-       WRITE(6,*) ' IERR FROM FVEX_SCAN_SOURCE2=',IERr
+       ierr=fget_scan_source2(j)
+       WRITE(6,*) ' IERR FROM FGET_SCAN_SOURCE2=',IERr
        if(ierr.eq.0) then
         do i=1,4
          ierr=fvex_field(i,ptr_ch(buffer),len(buffer))
@@ -843,8 +843,8 @@ c
       enddo
 c
       do j=1,3
-       ierr=fvex_scan_intent(j)
-       WRITE(6,*) ' IERR FROM FVEX_SCAN_intent=',IERr
+       ierr=fget_scan_intent(j)
+       WRITE(6,*) ' IERR FROM FGET_SCAN_INTENT=',IERr
        if(ierr.eq.0) then
         do i=1,4
          ierr=fvex_field(i,ptr_ch(buffer),len(buffer))

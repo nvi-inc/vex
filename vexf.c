@@ -646,8 +646,7 @@ integer *start_len, *mode_len, *scanid_len, *vex;
  *
  * Other lowls associated with the scan can be retrieved with the fget_scan_*()
  * routines, except use fget_station_scan() and fget_data_transfer_scan()
- * instead of fget_scan_station() and fget_scan_data_transfer(), and use
- * fvex_source2(), fvex_scan_pointing_offset(), and fvex_scan_intent().
+ * instead of fget_scan_station() and fget_scan_data_transfer().
  *
  * Input:
  *  character*(*) station     - the station to return station statements for,
@@ -730,8 +729,7 @@ integer *start_len, *mode_len, *scanid_len, *vex;
  *
  * Other lowls associated with the scan can be retrieved with the fget_scan_*()
  * routines, except use fget_station_scan() and fget_data_transfer_scan()
- * instead of fget_scan_station() and fget_scan_data_transfer(), and use
- * fvex_source2(), fvex_scan_pointing_offset(), and fvex_scan_intent().
+ * instead of fget_scan_station() and fget_scan_data_transfer().
  *
  * Input:
  *  character*(*) station     - the station to return data_transfer
@@ -808,8 +806,7 @@ integer *start_len, *mode_len, *scanid_len,*vex;
  *
  * The lowls associated with the scan can be retrieved with the fget_scan_*()
  * routines, except use fget_station_scan() and fget_data_transfer_scan()
- * instead of fget_scan_station() and fget_scan_data_transfer(), and use
- * fvex_source2(), fvex_scan_pointing_offset(), and fvex_scan_intent().
+ * instead of fget_scan_station() and fget_scan_data_transfer().
  *
  * Input:
  *  integer vex               - VEX file reference
@@ -1264,14 +1261,14 @@ integer *units_len;
 /* ----------------------------------------------------------------------- */
 integer
 #ifdef F2C
-fvex_scan_intent__
+fget_scan_intent__
 #else
-fvex_scan_intent
+fget_scan_intent
 #endif
 (n)
 integer *n;
 /*
- *      integer function fvex_scan_intent(n)
+ *      integer function fget_scan_intent(n)
  *      implicit none
  *      integer n
  *
@@ -1310,14 +1307,14 @@ integer *n;
 /* ----------------------------------------------------------------------- */
 integer
 #ifdef F2C
-fvex_scan_pointing_offset__
+fget_scan_pointing_offset__
 #else
-fvex_scan_pointing_offset
+fget_scan_pointing_offset
 #endif
 (n)
 integer *n;
 /*
- *      integer function fvex_scan_pointing_offset(n)
+ *      integer function fget_scan_pointing_offset(n)
  *      implicit none
  *      integer n
  *
@@ -1356,14 +1353,14 @@ integer *n;
 /* ----------------------------------------------------------------------- */
 integer
 #ifdef F2C
-fvex_scan_source2__
+fget_scan_source2__
 #else
-fvex_scan_source2
+fget_scan_source2
 #endif
 (n)
 integer *n;
 /*
- *      integer function fvex_scan_source2(n)
+ *      integer function fget_scan_source2(n)
  *      implicit none
  *      integer n
  *
@@ -1416,7 +1413,7 @@ integer *src_len;
  *      integer n
  *      character*(*) src
  *
- * DEPRECATED: Use fvex_scan_source2 instead.
+ * DEPRECATED: Use fget_scan_source2 instead.
  *
  * This routine can be used to retrieve the n-th source statement in a scan
  * block found by fget_scan(), fget_scan_station(), or
