@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 /* vexf.c FORTRAN VEX library */
 /* ----------------------------------------------------------------------- */
-
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -60,20 +60,26 @@ fvex_open
 char **name;
 integer *vex;
 /*
- *       integer function fvex_open(ptr_ch(name),vex)
- *       character*(*) name
- *       integer vex
+ *     integer function fvex_open(ptr_ch(name),vex)
+ *     character*(*) name
+ *     integer vex
  *
- * opens a vex file and reads it into memory
+ * Opens a VEX file and reads it into memory.
  *
- * input:
- *   character*(*) name      - pathname to file to be read in,
- *                             null terminated
+ * Input:
+ *  character*(*) name      - pathname to file to be read in,
+ *                            zero terminated
  *
- * output:
- *   integer vex             - vex file reference, for subsequent calls
- *   integer (return value)  - error code
- *                           - non-zero indicates error
+ * Output:
+ *  integer vex             - VEX file reference, for subsequent calls
+ *                            NOTE: on 64-bit machines this is 64-bit
+ *                            integer, calling FORTRAN source should use
+ *                            compile option -fdefault-integer-8 and/or
+ *                            possibly -finteger-4-integer-8 or an
+ *                            array with at least 64-bits
+ *
+ *  integer (return value)  - error code
+ *                          - non-zero indicates error
  */
 {
   return vex_open(*name,(struct vex **)vex);
@@ -90,32 +96,32 @@ fget_vex_rev
 char **version;
 integer *version_len, *vex;
 /*
- *        integer function fget_vex_rev(ptr_ch(version),len(version),
+ *      integer function fget_vex_rev(ptr_ch(version),len(version),
  *                                          vex)
- *        implicit none
- *        character*(*) version
- *        integer vex
+ *      implicit none
+ *      character*(*) version
+ *      integer vex
  *
- * returns the VX_rev string of the vex file
+ * Returns the VEX_rev string of the VEX file.
  *
- * input:
- *   integer vex             - vex file reference
+ * Input:
+ *  integer vex             - VEX file reference
+ *                            use value returned open_vex()
  *
- * output:
- *   character*(*) version   - VEX_rev string
- *                             use fvex_len to determine useful length
- *                             should be at least 1 byte longer than
- *                             longest expected to value to accommodate
- *                             null termination
- *
- *   integer (return value)  - error code, zero indicates no error
- *                             otherwise errors determined by bits, if
- *                             bit is on the error occurred, bits are
- *                             numbered from 0 and correspond to
- *                             the value of the corresponding power of 2,
- *                             e.g. bit 0 is decimal 1
- *                          bit 0 - VEX_rev  did not fit in version
- *                          bit 1 - *vex was NULL
+ * Output:
+ *  character*(*) version   - VEX_rev string
+ *                            use fvex_len() to determine useful length
+ *                            should be at least 1 byte longer than
+ *                            longest expected value to accommodate
+ *                            zero termination
+ *  integer (return value)  - error code, zero indicates no error
+ *                            otherwise errors determined by bits, if
+ *                            bit is on the error occurred, bits are
+ *                            numbered from 0 and correspond to
+ *                            the value of the corresponding power of 2,
+ *                            e.g., bit 0 is decimal 1
+ *                              bit 0 - VEX_rev did not fit in version
+ *                              bit 1 - vex was NULL
  */
 {
   char *ptr;
@@ -153,37 +159,40 @@ fget_station_def
 char **station;
 integer *station_len, *vex;
 /*
- *        integer function fget_station_def(ptr_ch(station),len(station),
+ *      integer function fget_station_def(ptr_ch(station),len(station),
  *                                          vex)
- *        implicit none
- *        character*(*) station
- *        integer vex
+ *      implicit none
+ *      character*(*) station
+ *      integer vex
  *
- * returns the station defs in the $STATION section of the vex file
+ * Returns the station defs in the $STATION section of the VEX file.
  *
- * To retrieve the list of station defs, call the this routine the first
- * time with vex set to the value returned by open_vex, on subsequent
- * calls use 0. If fvex_len reports that the returned character string has
- * zero length then al the stations have been returned.
+ * To retrieve the list of station defs, call this routine the first time with
+ * vex set to the value returned by open_vex(), on subsequent calls use 0. If
+ * fvex_len() reports that the returned character string has zero length then
+ * all the stations have been returned.
  *
- * input:
- *   integer vex             - vex file reference
- *                             use value returned open_vex for first call
- *                             use 0 for subsequent calls
- * output:
- *   character*(*) station   - station def name
- *                             use fvex_len to determine useful length
- *                             should be at least 1 byte longer than
- *                             longest expected to value to accommodate
- *                             null termination
+ * Use fget_station_lowls() to find lowls for the found station def.
  *
- *   integer (return value)  - error code, zero indicates no error
- *                             otherwise errors determined by bits, if
- *                             bit is on the error occurred, bits are
- *                             numbered from 0 and correspond to
- *                             the value of the corresponding power of 2,
- *                             e.g. bit 0 is decimal 1
- *                          bit 0 - station def name did not fit in station
+ * Input:
+ *  integer vex             - VEX file reference
+ *                            use value returned open_vex() for first call,
+ *                            use 0 for subsequent calls
+ *
+ * Output:
+ *  character*(*) station   - station def name
+ *                            use fvex_len() to determine useful length
+ *                            should be at least 1 byte longer than
+ *                            longest expected to value to accommodate
+ *                            zero termination
+ *
+ *  integer (return value)  - error code, zero indicates no error
+ *                            otherwise errors determined by bits, if
+ *                            bit is on the error occurred, bits are
+ *                            numbered from 0 and correspond to
+ *                            the value of the corresponding power of 2,
+ *                            e.g., bit 0 is decimal 1
+ *                              bit 0 - station def name did not fit in station
  */
 {
   char *ptr;
@@ -222,35 +231,36 @@ fget_mode_def
 char **mode;
 integer *mode_len,*vex;
 /*
- *        integer function fget_mode_def(ptr_ch(mode),len(mode),vex)
- *        implicit none
- *        character*(*) mode
- *        integer vex
+ *      integer function fget_mode_def(ptr_ch(mode),len(mode),vex)
+ *      implicit none
+ *      character*(*) mode
+ *      integer vex
  *
- * returns the mode def names from the $MODE section of the vex file
+ * Returns the mode def names from the $MODE section of the VEX file.
  *
- * To retrieve the list of mode defs, call the this routine the first
- * time with vex set to the value returned by open_vex, on subsequent
- * calls use 0. If fvex_len reports that the returned character string has
- * zero length then al the stations have been returned.
+ * To retrieve the list of mode defs, call this routine the first time with vex
+ * set to the value returned by open_vex(), on subsequent calls use 0. If
+ * fvex_len() reports that the returned character string has zero length then
+ * all the modes have been returned.
  *
- * input:
- *   integer vex             - vex file reference
- *                             use value returned open_vex for first call
- *                             use 0 for subsequent calls
- * output:
- *   character*(*) mode      - mode def name
- *                             use fvex_len to determine useful length
- *                             should be at least 1 byte longer than
- *                             longest expected to value to accommodate
- *                             null termination
- *   integer (return value)  - error code, zero indicates no error
- *                             otherwise errors determined by bits, if
- *                             bit is on the error occurred, bits are
- *                             numbered from 0 and correspond to
- *                             the value of the corresponding power of 2,
- *                             e.g. bit 0 is decimal 1
- *                             bit 0 - mode def name did not fit in mode
+ * Input:
+ *  integer vex             - VEX file reference
+ *                            use value returned open_vex() for first call,
+ *                            use 0 for subsequent calls
+ *
+ * Output:
+ *  character*(*) mode      - mode def name
+ *                            use fvex_len() to determine useful length
+ *                            should be at least 1 byte longer than
+ *                            longest expected to value to accommodate
+ *                            zero termination
+ *  integer (return value)  - error code, zero indicates no error
+ *                            otherwise errors determined by bits, if
+ *                            bit is on the error occurred, bits are
+ *                            numbered from 0 and correspond to
+ *                            the value of the corresponding power of 2,
+ *                            e.g., bit 0 is decimal 1
+ *                              bit 0 - mode def name did not fit in mode
  */
 {
   char *ptr;
@@ -288,35 +298,38 @@ fget_source_def
 char **source;
 integer *source_len,*vex;
 /*
- *        integer function fget_source_def(ptr_ch(source),len(source),vex)
- *        implicit none
- *        character*(*) source
- *        integer vex
+ *      integer function fget_source_def(ptr_ch(source),len(source),vex)
+ *      implicit none
+ *      character*(*) source
+ *      integer vex
  *
- * returns the source defs in the $SOURCE section of the vex file
+ * Returns the source defs in the $SOURCE section of the VEX file.
  *
- * To retrieve the list of source defs, call the this routine the first
- *  time with vex set to the value returned by open_vex, on subsequent calls
- *  use 0. If fvex_len reports that the returned character string has zero
- *   length then al the stations have been returned.
+ * To retrieve the list of source defs, call this routine the first time with
+ * vex set to the value returned by open_vex(), on subsequent calls use 0. If
+ * fvex_len() reports that the returned character string has zero length then
+ * all the sources have been returned.
  *
- * input:
- *   integer vex             - vex file reference
- *                             use value returned open_vex for first call
- *                             use 0 for subsequent calls
- * output:
- *   character*(*) source    - source def name
- *                             use fvex_len to determine useful length
- *                             should be at least 1 byte longer than
- *                             longest expected to value to accomodate
- *                             null termination
- *   integer (return value)  - error code, zero indicates no error
- *                             otherwise errors determined by bits, if
- *                             bit is on the error occurred, bits are
- *                             numbered from 0 and correspond to
- *                             the value of the corresponding power of 2,
- *                             e.g. bit 0 is decimal 1
- *                            bit 0 - source def name did not fit in source
+ * Use fget_source_lowls() to find lowls for the found source def
+ *
+ * Input:
+ *  integer vex             - VEX file reference
+ *                            use value returned open_vex() for first call,
+ *                            use 0 for subsequent calls
+ *
+ * Output:
+ *  character*(*) source    - source def name
+ *                            use fvex_len() to determine useful length
+ *                            should be at least 1 byte longer than
+ *                            longest expected to value to accommodate
+ *                            zero termination
+ *  integer (return value)  - error code, zero indicates no error
+ *                            otherwise errors determined by bits, if
+ *                            bit is on the error occurred, bits are
+ *                            numbered from 0 and correspond to
+ *                            the value of the corresponding power of 2,
+ *                            e.g., bit 0 is decimal 1
+ *                              bit 0 - source def name did not fit in source
  */
 {
   char *ptr;
@@ -353,44 +366,43 @@ fget_all_lowl
 char **station, **mode, **statement, **primitive;
 integer *vex;
 /*
- *       integer function fget_all_lowl(ptr_ch(station),
- *      &                               ptr_ch(mode),
- *      &                               ptr_ch(statement),
- *      &                               ptr_ch(primitive),
- * 	&                               vex)
- *       implicit none
- *       character*(*) station,mode,statement,primitive
- *       integer vex
+ *      integer function fget_all_lowl(ptr_ch(station),
+ *     &                               ptr_ch(mode),
+ *     &                               ptr_ch(statement),
+ *     &                               ptr_ch(primitive),
+ *     &                               vex)
+ *      implicit none
+ *      character*(*) station,mode,statement,primitive
+ *      integer vex
  *
- * get the low-level statement associated with a mode for a given statement
+ * Get the low-level statement associated with a mode for a given station.
  *
- * This routine can be used to retrieve all the low-level statements
- *   associated with a given mode for a given station. Call this routine
- *   the first time with vex set to the value returned by open_vex, on
- *   subsequent calls use 0. The call with vex nonzero should specify
- *   the station, mode, statement, and primitive block (containing the
- *   statement). When vex is zero, station, mode, statement, and primitive
- *   are ignored.
+ * This routine can be used to retrieve all the low-level statements associated
+ * with a given mode for a given station. Call this routine the first time with
+ * vex set to the value returned by open_vex(), on subsequent calls use 0. The
+ * call with vex nonzero should specify the station, mode, statement, and
+ * primitive block (containing the statement). When vex is zero, station, mode,
+ * statement, and primitive are ignored.
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * When this routine does not return an error, the fields can be accessed using
+ * fvex_field() and fvex_units().
  *
- *   Statements are returned in order of $MODE, $STATION, $GLOBAL.
+ * Statements are returned in order of $MODE, $STATION, $GLOBAL.
  *
- * input:
- *   character*(*) station     - station def name, null terminated
- *   character*(*) mode        - mode def name, null terminated
- *   character*(*) statement   - the statement to be retrieved
- *                               null terminated
- *   character*(*) primitive   - primitive block from which station
- *                               should be retrieved. omit the leading "$"
- *                               null terminated
- *   integer vex               - vex file reference
- *                              use value returned open_vex for first call
- *                               use 0 for subsequent calls
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -3 = no more statements to return
+ * Input:
+ *  character*(*) station     - station def name, zero terminated
+ *  character*(*) mode        - mode def name, zero terminated
+ *  character*(*) statement   - the statement to be retrieved
+ *                              zero terminated
+ *  character*(*) primitive   - primitive block from which the statement
+ *                              should be retrieved, omit the leading "$"
+ *                              zero terminated
+ *  integer vex               - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  integer (return value)    - error code, zero indicates no error
  */
 {
   int iprimitive;
@@ -419,46 +431,45 @@ fget_mode_lowl
 char **station, **mode, **statement, **primitive;
 integer *vex;
 /*
- *       integer function fget_mode_lowl(ptr_ch(station),
- *      &                                ptr_ch(mode),
- *      &                                ptr_ch(statement),
- *      &                                ptr_ch(primitive),
- * 	&                                vex)
- *       implicit none
- *       character*(*) station,mode,statement,primitive
- *       integer vex
+ *      integer function fget_mode_lowl(ptr_ch(station),
+ *     &                                ptr_ch(mode),
+ *     &                                ptr_ch(statement),
+ *     &                                ptr_ch(primitive),
+ *     &                                vex)
+ *      implicit none
+ *      character*(*) station,mode,statement,primitive
+ *      integer vex
  *
- * get the low-level statement associated with a mode for a given statement
+ * Get the low-level statement associated with a mode for a given statement.
  *
  * This routine can be used to retrieve the $MODE specified low-level
- * statements
- * associated with a given mode for a given station. Call this routine
- * the first time with vex set to the value returned by open_vex, on
- * susequent calls use 0. The call with vex nonzero should specify
- * the station, mode, statement, and primitive block (containing the
- * statement). When vex is zero, station, mode, statement, and primitive
- * are ignored.
+ * statements associated with a given mode for a given station. Call this
+ * routine the first time with vex set to the value returned by open_vex(), on
+ * subsequent calls use 0. The call with vex nonzero should specify the station,
+ * mode, statement, and primitive block (containing the statement). When vex is
+ * zero, station, mode, statement, and primitive are ignored.
  *
  * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * using fvex_field() and fvex_units().
  *
- * Information specified in the $STATION and $GLOBAL blocks is not
- * returned. In general this routine is not useful, fget_all_lowl is
- * usually what is wanted.
+ * Information specified in the $STATION and $GLOBAL blocks is not returned. In
+ * general this routine is not useful, fget_all_lowl() is usually what is
+ * wanted.
  *
- *  input:
- *   character*(*) station     - station def name, null terminated
- *   character*(*) mode        - mode def name, null terminated
- *   character*(*) statement   - the statement to be retrieved,
- *                               null terminated
- *   character*(*) primitive   - primitive block from which the statement
- *                               should be retrieved. omit the leading "$"
- *                               null terminated
- *  integer vex                - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- *  output:
- *   integer (return value)    - error code, zero indicates no error
+ * Input:
+ *  character*(*) station     - station def name, zero terminated
+ *  character*(*) mode        - mode def name, zero terminated
+ *  character*(*) statement   - the statement to be retrieved,
+ *                              zero terminated
+ *  character*(*) primitive   - primitive block from which the statement
+ *                              should be retrieved, omit the leading "$"
+ *                              zero terminated
+ * integer vex                - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  integer (return value)    - error code, zero indicates no error
  *                               -3 = no more statements to return
  */
 {
@@ -487,41 +498,43 @@ fget_station_lowl
 char **station, **statement, **primitive;
 integer *vex;
 /*
- *       integer function fget_station_lowl(ptr_ch(station),
- *      &                                 ptr_ch(statement),
- *      &                                 ptr_ch(primitive),
- * 	&                                 vex)
- *       implicit none
- *       character*(*) station,statement,primitive
- *       integer vex
+ *      integer function fget_station_lowl(ptr_ch(station),
+ *     &                                 ptr_ch(statement),
+ *     &                                 ptr_ch(primitive),
+ *     &                                 vex)
+ *      implicit none
+ *      character*(*) station,statement,primitive
+ *      integer vex
  *
- * get the low-level statement associated with a mode for a given statement
+ * Get the low-level statement associated with a mode for a given statement.
  *
  * This routine can be used to retrieve the $STATION specified low-level
- *  statememts associated with a station. Call this routine the first time
- *  with vex set to the value returned by open_vex, on susequent calls
- *  use 0. The call with vex nonzero should specify the station, statement,
- *   and primitive block (containing the statement). When vex is zero,
- *   station, statement, and primitive are ignored.
+ * statements associated with a station. Call this routine the first time
+ * with vex set to the value returned by open_vex(), on subsequent calls
+ * use 0. The call with vex nonzero should specify the station, statement,
+ * and primitive block (containing the statement). When vex is zero,
+ * station, statement, and primitive are ignored.
  *
  * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * using fvex_field() and fvex_units().
  *
- * Information specified in the $MODE and $GLOBAL blocks is not
- *   returned.
+ * Information specified in the $MODE and $GLOBAL blocks is not returned. In
+ * general this routine is not useful, fget_all_lowl() is usually what is
+ * wanted.
  *
- *  input:
- *   character*(*) station     - station def name, null terminated
- *   character*(*) statement   - the statement to be retrieved,
- *                               null terminated
- *   character*(*) primitive   - primitive block from which station
- *                               should be retrieved. omit the leading "$"
- *                               null terminated
- *   integer vex               - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- *  output:
- *   integer (return value)    - error code, zero indicates no error
+ * Input:
+ *  character*(*) station     - station def name, zero terminated
+ *  character*(*) statement   - the statement to be retrieved,
+ *                              zero terminated
+ *  character*(*) primitive   - primitive block from which the statement
+ *                              should be retrieved, omit the leading "$"
+ *                              zero terminated
+ *  integer vex               - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  integer (return value)    - error code, zero indicates no error
  *                               -3 = no more statements to return
  */
 {
@@ -551,38 +564,40 @@ fget_global_lowl
 char **statement, **primitive;
 integer *vex;
 /*
- *       integer function fget_global_lowl(ptr_ch(statement),
- *      &                                 ptr_ch(primitive),
- * 	&                                 vex)
- *       implicit none
- *       character*(*) statement,primitive
- *       integer vex
+ *      integer function fget_global_lowl(ptr_ch(statement),
+ *     &                                 ptr_ch(primitive),
+ *     &                                 vex)
+ *      implicit none
+ *      character*(*) statement,primitive
+ *      integer vex
  *
- * get the low-level statement associated with a mode for a given statement
+ * Get the low-level statement associated with a mode for a given statement.
  *
- * This routine can be used to retrieve all the low-level statememts
- *  global referenced. Call this routine the first time with vex set to the
- *  value returned by open_vex, on susequent calls use 0. The call with vex
- *   nonzero should specify the statement  and primitive block (containing
- *   the statement). When vex is zero statement and primitive are ignored.
+ * This routine can be used to retrieve all the low-level statements
+ * globally referenced. Call this routine the first time with vex set to the
+ * value returned by open_vex(), on subsequent calls use 0. The call with vex
+ * nonzero should specify the statement  and primitive block (containing
+ * the statement). When vex is zero statement and primitive are ignored.
  *
  * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * using fvex_field() and fvex_units().
  *
- * Information specified in the $MODE and $STATION blocks is not
- *   returned.
+ * Information specified in the $MODE and $STATION blocks is not returned. In
+ * general this routine is not useful, fget_all_low() is usually what is
+ * wanted.
  *
- *  input:
- *   character*(*) statement   - the statement to be retrieved,
- *                               null terminated
- *   character*(*) primitive   - primitive block from which station
- *                               should be retrieved. omit the leading "$"
- *                               null terminated
- *  integer vex                - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- *  output:
- *   integer (return value)    - error code, zero indicates no error
+ * Input:
+ *  character*(*) statement   - the statement to be retrieved,
+ *                              zero terminated
+ *  character*(*) primitive   - primitive block from which the statement
+ *                              should be retrieved, omit the leading "$"
+ *                              zero terminated
+ * integer vex                - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  integer (return value)    - error code, zero indicates no error
  *                               -3 = no more statements to return
  */
 {
@@ -611,46 +626,48 @@ fget_scan_station
 char **start, **mode, **station, **scanid;
 integer *start_len, *mode_len, *scanid_len, *vex;
 /*
- *       integer function fget_scan_station(ptr_ch(start), len(start),
- *      &                                   ptr_ch(mode), len(mode),
- *      &                                   ptr_ch(scanid), len(scanid),
- *      &                                   ptr_ch(station),
- * 	&                                   vex)
- *        implicit none
- *        character*(*) start,mode,station,scanid
- *        integer vex
+ *      integer function fget_scan_station(ptr_ch(start), len(start),
+ *     &                                   ptr_ch(mode), len(mode),
+ *     &                                   ptr_ch(scanid), len(scanid),
+ *     &                                   ptr_ch(station),
+ *     &                                   vex)
+ *      implicit none
+ *      character*(*) start,mode,station,scanid
+ *      integer vex
  *
- * This routine can be used to retrieve all of the station statments
- *  associated with a station. Call this routine the first time with vex set
- *  to the value returned by open_vex, on susequent calls use 0. When vex
- *  is zero, station is ignored. The call with vex nonzero should specify
- *  the station. When vex is zero station is ignored.
+ * This routine can be used to retrieve all of the station statements
+ * associated with a station. Call this routine the first time with vex set
+ * to the value returned by open_vex(), on subsequent calls use 0. When vex
+ * is zero, station is ignored. The call with vex nonzero should specify
+ * the station.
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * The fields of the station statement can be accessed using fvex_field() and
+ * fvex_units().
  *
- * When this routine does not return an error, the sources can be accessed
- *   using fvex_scan_source for VEX1.
- *   or fvex_scan_source2 for VEX1 and VEX2.
+ * Other lowls associated with the scan can be retrieved with the fget_scan_*()
+ * routines, except use fget_station_scan() and fget_data_transfer_scan()
+ * instead of fget_scan_station() and fget_scan_data_transfer(), and use
+ * fvex_source2(), fvex_scan_pointing_offset(), and fvex_scan_intent().
  *
- *  input:
- *   character*(*) station     - the station to reurn statements for
- *                               null terminated
- *   integer vex               - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- *  output:
- *   character*(*) start       - nominal start time for this scan
- *                               use fvex_len to determine useful length
- *   character*(*) mode        - mode for this scan
- *                               use fvex_len to determine useful length
- *   character*(*) scanid      - scanid for this scan
- *                               use fvex_len to determine useful length
- *   integer (return value)    - error code, zero indicates no error
- *                               -3 = no more statements to return
- *                               -4 = start did not fit in start
- *                               -5 = mode did not fit in mode
- *                               -6 = scanid did not fit in scanid
+ * Input:
+ *  character*(*) station     - the station to return station statements for,
+ *                              zero terminated
+ *  integer vex               - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  character*(*) start       - nominal start time for this scan
+ *                              use fvex_len() to determine useful length
+ *  character*(*) mode        - mode for this scan
+ *                              use fvex_len() to determine useful length
+ *  character*(*) scanid      - scanid for this scan
+ *                              use fvex_len() to determine useful length
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -3 = no more statements to return
+ *                              -4 = start did not fit in start
+ *                              -5 = mode did not fit in mode
+ *                              -6 = scanid did not fit in scanid
  */
 {
   int ierr;
@@ -693,46 +710,48 @@ fget_scan_data_transfer
 char **start, **mode, **station, **scanid;
 integer *start_len, *mode_len, *scanid_len, *vex;
 /*
- *       integer function fget_scan_data_transfer(ptr_ch(start), len(start),
- *      &                                   ptr_ch(mode), len(mode),
- *      &                                   ptr_ch(scanid), len(scanid),
- *      &                                   ptr_ch(station),
- * 	&                                   vex)
- *        implicit none
- *        character*(*) start,mode,station,scanid
- *        integer vex
+ *      integer function fget_scan_data_transfer(ptr_ch(start), len(start),
+ *     &                                   ptr_ch(mode), len(mode),
+ *     &                                   ptr_ch(scanid), len(scanid),
+ *     &                                   ptr_ch(station),
+ *     &                                   vex)
+ *      implicit none
+ *      character*(*) start,mode,station,scanid
+ *      integer vex
  *
- * This routine can be used to retrieve all of the data_transfer statments
- *  associated with a station. Call this routine the first time with vex set
- *  to the value returned by open_vex, on susequent calls use 0. When vex
- *  is zero, station is ignored. The call with vex nonzero should specify
- *  the station. When vex is zero station is ignored.
+ * This routine can be used to retrieve all of the data_transfer statements
+ * associated with a station. Call this routine the first time with vex set
+ * to the value returned by open_vex(), on subsequent calls use 0. When vex
+ * is zero, station is ignored. The call with vex nonzero should specify
+ * the station.
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * The fields of the data_transfer statement can be accessed using fvex_field()
+ * and fvex_units().
  *
- * When this routine does not return an error, the sources can be accessed
- *   using fvex_scan_source for VEX1.
- *   or fvex_scan_source2 for VEX1 and VEX2.
+ * Other lowls associated with the scan can be retrieved with the fget_scan_*()
+ * routines, except use fget_station_scan() and fget_data_transfer_scan()
+ * instead of fget_scan_station() and fget_scan_data_transfer(), and use
+ * fvex_source2(), fvex_scan_pointing_offset(), and fvex_scan_intent().
  *
- *  input:
- *   character*(*) station     - the station to reurn statements for
- *                               null terminated
- *   integer vex               - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- *  output:
- *   character*(*) start       - nominal start time for this scan
- *                               use fvex_len to determine useful length
- *   character*(*) mode        - mode for this scan
- *                               use fvex_len to determine useful length
- *   character*(*) scanid      - scanid for this scan
- *                               use fvex_len to determine useful length
- *   integer (return value)    - error code, zero indicates no error
- *                               -3 = no more statements to return
- *                               -4 = start did not fit in start
- *                               -5 = mode did not fit in mode
- *                               -6 = scanid did not fit in scanid
+ * Input:
+ *  character*(*) station     - the station to return data_transfer
+ *                              statements for, zero terminated
+ *  integer vex               - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  character*(*) start       - nominal start time for this scan
+ *                              use fvex_len() to determine useful length
+ *  character*(*) mode        - mode for this scan
+ *                              use fvex_len() to determine useful length
+ *  character*(*) scanid      - scanid for this scan
+ *                              use fvex_len() to determine useful length
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -3 = no more statements to return
+ *                              -4 = start did not fit in start
+ *                              -5 = mode did not fit in mode
+ *                              -6 = scanid did not fit in scanid
  */
 {
   int ierr;
@@ -775,50 +794,49 @@ fget_scan
 char **start, **mode, **scanid;
 integer *start_len, *mode_len, *scanid_len,*vex;
 /*
- *       integer function fget_scan(ptr_ch(start),len(start),
+ *      integer function fget_scan(ptr_ch(start),len(start),
  *     &                           ptr_ch(mode),len(mode),
  *     &                           ptr_ch(scanid),len(scanid),
  *     &                                   vex)
  *      implicit none
- *       character*(*) start,mode,station,scanid
- *       integer vex
+ *      character*(*) start,mode,station,scanid
+ *      integer vex
  *
- * This routine can be used to retrieve all of the station statments
- *   associated with a station. Call this routine the first time with vex set
- *   to the value returned by open_vex, on subsequent calls use 0.
+ * This routine can be used to retrieve all the scans, one-by-one. Call this
+ * routine the first time with vex set to the value returned by open_vex(), on
+ * subsequent calls use 0.
  *
- * When this routine does not return an error, use the fget_station_scan to
- *   find the station statements for this scan.
+ * The lowls associated with the scan can be retrieved with the fget_scan_*()
+ * routines, except use fget_station_scan() and fget_data_transfer_scan()
+ * instead of fget_scan_station() and fget_scan_data_transfer(), and use
+ * fvex_source2(), fvex_scan_pointing_offset(), and fvex_scan_intent().
  *
- * When this routine does not return an error, the source names can be
- *   using fvex_scan_source for VEX1.
- *   or fvex_scan_source2 for VEX1 and VEX2.
+ * Input:
+ *  integer vex               - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
  *
- *  input:
- *   integer vex               - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- *  output:
- *   character*(*) start       - nominal start time for this scan
- *                               use fvex_len to determine useful length
- *                               should be at least 1 character larger than
- *                               longest possible value to hold null
- *                               termination
- *   character*(*) mode        - mode for this scan
- *                               use fvex_len to determine useful length
- *                               should be at least 1 character larger than
- *                               longest possible value to hold null
- *                               termination
- *   character*(*) scanid      - scanid for this scan
- *                               use fvex_len to determine useful length
- *                               should be at least 1 character larger than
- *                               longest possible value to hold null
- *                               termination
- *   integer (return value)    - error code, zero indicates no error
- *                               -2 = no more scans
- *                               -4 = start time did not fit in start
- *                               -5 = mode did not fit in mode
- *                               -6 = scanid did not fit in scanid
+ * Output:
+ *  character*(*) start       - nominal start time for this scan
+ *                              use fvex_len() to determine useful length
+ *                              should be at least 1 character larger than
+ *                              longest possible value to hold zero
+ *                              termination
+ *  character*(*) mode        - mode for this scan
+ *                              use fvex_len() to determine useful length
+ *                              should be at least 1 character larger than
+ *                              longest possible value to hold zero
+ *                              termination
+ *  character*(*) scanid      - scanid for this scan
+ *                              use fvex_len() to determine useful length
+ *                              should be at least 1 character larger than
+ *                              longest possible value to hold zero
+ *                              termination
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -2 = no more scans
+ *                              -4 = start time did not fit in start
+ *                              -5 = mode did not fit in mode
+ *                              -6 = scanid did not fit in scanid
  */
 {
   int  ierr;
@@ -859,26 +877,25 @@ fget_station_scan
 (n)
 integer *n;
 /*
- *       integer function fget_station_scan(n)
- *       implicit none
- *       integer n
+ *      integer function fget_station_scan(n)
+ *      implicit none
+ *      integer n
  *
- * This routine can be used to retrieve the station for a station statement
- *   in scan block found by fget_scan.
+ * This routine can be used to retrieve the n-th station statement in a scan
+ * block found by fget_scan(),  fget_scan_station(), or
+ * fget_scan_data_transfer().
  *
- * When this routine does not return an error, the fields in the station
- *   statement can be accessed using fvex_field.
+ * The fields in the station statement can be accessed using fvex_field() and
+ * fvex_units().
  *
- * This is highly efficent when n increases by one on each call.
+ * This is highly efficient when n increases by one on each call.
  *
- *   integer n                 - the number of the station statement in this
- *                               scan to return
- *  input:
- *   integer n                - station statement to return
+ * Input:
+ *  integer n                 - the number of the station statement in this
  *
- *  output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -2 = no such station statment in this scan
+ * Output:
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -2 = no such station statement in this scan
  */
 {
   int i;
@@ -910,27 +927,25 @@ fget_data_transfer_scan
 (n)
 integer *n;
 /*
- *       integer function fget_data_transfer_scan(n)
- *       implicit none
- *       integer n
+ *      integer function fget_data_transfer_scan(n)
+ *      implicit none
+ *      integer n
  *
- * This routine can be used to retrieve the station for a data_transfer *
- * statement
- *   in scan block found by fget_scan.
+ * This routine can be used to retrieve the n-th data_transfer statement in a
+ * scan block found by fget_scan(),  fget_scan_station(), or
+ * fget_scan_data_transfer().
  *
- * When this routine does not return an error, the fields in the
- * data_transfer statement can be accessed using fvex_field.
+ * The fields in the data_transfer statement can be accessed using fvex_field()
+ * and fvex_units().
  *
- * This is highly efficent when n increases by one on each call.
+ * This is highly efficient when n increases by one on each call.
  *
- *   integer n            - the number of the data_transfer statement in this
- *                          scan to return
- *  input:
- *   integer n            - data_transfer statement to return
+ * Input:
+ *  integer n            - the number of the data_transfer statement in this
  *
- *  output:
- *   integer (return value) - error code, zero indicates no error
- *                         -2 = no such data_transfer statment in this scan
+ * Output:
+ *  integer (return value) - error code, zero indicates no error
+ *                           -2 = no such data_transfer statement in this scan
  */
 {
   int i;
@@ -963,36 +978,35 @@ fget_source_lowl
 char **source, **statement;
 integer *vex;
 /*
- *        integer function fget_source_lowl(ptr_chr(source),
- *                                          ptr_chr(statement),
- *                                          vex)
- *        implicit none
- *        character*(*) source,statement
- *        integer vex
+ *      integer function fget_source_lowl(ptr_chr(source),
+ *     &                                  ptr_chr(statement),
+ *     &                                  vex)
+ *      implicit none
+ *      character*(*) source,statement
+ *      integer vex
  *
- * get a low-level statement associated with a source
+ * Get a low-level statement associated with a source.
  *
- * This routine is used to retrieve the $SOURCE low-level statements
- *   associated with a given source def. Call
- *   this routine the first time with vex set to the value returned by
- *   open_vex, on subsequent calls use 0. The call with vex nonzero should
- *   specify the source and the statement. When vex is zero, source and
- *   statement are ignored are ignored.
+ * This routine is used to retrieve the $SOURCE low-level statements associated
+ * with a given source def. Call this routine the first time with vex set to
+ * the value returned by open_vex(), on subsequent calls use 0. The call with
+ * vex nonzero should specify the source and the statement. When vex is zero,
+ * source and statement are ignored are ignored.
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * When this routine does not return an error, the fields can be accessed using
+ * fvex_field() and fvex_units().
  *
- * input:
- *   character*(*) source      - source def name, null terminated
- *   character*(*) statement   - the statement to be retrieved,
- *                               null terminated
- *   integer vex               - vex file reference
- *                               use value returned open_vex for first call
- *                               use 0 for subsequent calls
- * output:
- *   integer fields            - number of useful elements returned
- *   integer (return value)    - error code, zero indicates no error
- *                               -3 = no more statements to return
+ * Input:
+ *  character*(*) source      - source def name, zero terminated
+ *  character*(*) statement   - the statement to be retrieved,
+ *                              zero terminated
+ *  integer vex               - VEX file reference
+ *                              use value returned open_vex() for first call,
+ *                              use 0 for subsequent calls
+ *
+ * Output:
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -3 = no more statements to return
  */
 {
   if(*vex!=0) {
@@ -1016,22 +1030,27 @@ fget_literal
 (string)
 char *string;
 /*
- *        integer function fget_literal(string)
- *        implicit none
- *        I*2 string
+ *      integer function fget_literal(string)
+ *      implicit none
+ *      integer*2 string
  *
- * get a low-level statement associated with a scheduling parameters
+ * Get a low-level statement associated with a scheduling parameters.
  *
- * This routine is used to retrieve the $SCHEDULING_PARAMS low-level
- *   statements associated with a given global,mode, or station ref.
+ * This routine is used to retrieve the $SCHEDULING_PARAMS literal
+ * strings associated with a given global, mode, or station ref.
  *
- * input:
- *   none
+ * This is called after finding a 'literal' lowl in the $SCHEDULING_PARAMS
+ * block.
  *
- * output:
- *   I*2 string                - string text
- *   integer (return value)    - number of characters or error
- *                               -3 = no more statements to return
+ * Input:
+ *  none
+ *
+ * Output:
+ *  integer*2 string          - string text, must be large enough
+ *                              to hold the longest string plus one
+ *                              for zero terminator
+ *  integer (return value)    - number of characters or error
+ *                              -3 = no more statements to return
  */
 {
   char *string2;
@@ -1071,21 +1090,26 @@ fget_literal_st
 (string)
 char **string;
 /*
- *        integer function fget_literal(ptr_chr(string)
- *        implicit none
- *        character*(*) string
+ *       integer function fget_literal(ptr_chr(string)
+ *       implicit none
+ *       character*(*) string
  *
- * get a low-level statement associated with a scheduling parameters
+ * Get a low-level statement associated with a scheduling parameters.
  *
- * This routine is used to retrieve the $SCHEDULING_PARAMS low-level
- *   statements associated with a given global,mode, or station ref.
+ * This routine is used to retrieve the $SCHEDULING_PARAMS literal
+ * strings associated with a given global, mode, or station ref.
  *
- * input:
- *   none
+ * This is called after finding a 'literal' lowl in the $SCHEDULING_PARAMS
+ * block.
  *
- * output:
- *   character*(*) string      - string name, null terminated
- *   integer (return value)    - count or error  -3 last statement
+ * Input:
+ *  none
+ *
+ * Output:
+ *  character*(*) string      - string name, zero terminated, must be large
+ *                              enough to hold the longest string plus one
+ *                              for zero terminator
+ *  integer (return value)    - count or error -3 last statement
  */
 {
   char *string2;
@@ -1116,17 +1140,17 @@ fvex_len
 char *field;
 ftnlen field_len;
 /*
- *        integer function fvex_len(field)
- *        implicit none
- *        character*(*) field
+ *      integer function fvex_len(field)
+ *      implicit none
+ *      character*(*) field
  *
  * Returns the number of useful characters in a vex field
  *
- * input:
- *   character*(*) field      - vex field to be examined
+ * Input:
+ *  character*(*) field      - vex field to be examined
  *
- * output:
- *   integer (return value)   - number of useful characters in field
+ * Output:
+ *  integer (return value)   - number of useful characters in field
  *                              0 <= (return value) <= (*)
  */
 {
@@ -1139,7 +1163,6 @@ ftnlen field_len;
   return field_len;
 }
 
-
 /* ----------------------------------------------------------------------- */
 integer 
 #ifdef F2C
@@ -1151,25 +1174,24 @@ fvex_field
 integer *n, *field_len;
 char **field;
 /*
- *        integer function fvex_field(n,ptr_ch(field),len(field))
- *        implicit none
- *        integer n
- *        character*(*) field
+ *      integer function fvex_field(n,ptr_ch(field),len(field))
+ *      implicit none
+ *      integer n
+ *      character*(*) field
  *
- * Returns the field from a statement located using get_*_lowl*() routine.
+ * Returns the field from a statement located using a fget_*_lowl(),
+ * fget_scan_*() (but not fget_source()), or fget_*_scan() routine.
  *
- * input:
- *   integer n                - field to return
+ * Input:
+ *  integer n                - field to return
  *
- * output:
- *   character*(*) field      - returned field, use fvex_len to get useful
- *                              length
- *
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -4 = field did not fit in field variable
- *				 -6 = n out of range
- *				 -9 = no statement available
+ * Output:
+ *  character*(*) field      - returned field, use fvex_len() to get useful
+ *                             length
+ *  integer (return value)   - error code, zero indicates no error
+ *                             -4 = field did not fit in field variable
+ *                             -6 = n out of range
+ *                             -9 = no statement available
  */
 {
   int link,name, ierr;
@@ -1212,25 +1234,23 @@ fvex_units
 char **units;
 integer *units_len;
 /*
- *        integer function fvex_units(ptr_ch(units),len(units))
- *        implicit none
- *        character*(*) units
+ *      integer function fvex_units(ptr_ch(units),len(units))
+ *      implicit none
+ *      character*(*) units
  *
- * Returns the units from the most recently accessed field by fget_field().
+ * Returns the units from the most recently accessed field by fvex_field().
  *
- * input:
- *   none
+ * Input:
+ *  none
  *
- * output:
- *   character*(*) units      - returned units, use fvex_len to get useful
- *                              length, zero length means no units
- *                              should be at least 1 character larger than
- *                              longest possible value to hold null
- *                              termination
- *
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               - 4 = units did not fit in units variable
+ * Output:
+ *  character*(*) units      - returned units, use fvex_len() to get useful
+ *                             length, zero length means no units
+ *                             should be at least 1 character larger than
+ *                             longest possible value to hold zero
+ *                             termination
+ *  integer (return value)   - error code, zero indicates no error
+ *                             - 4 = units did not fit in units variable
  */
 {
   int ierr;
@@ -1251,22 +1271,23 @@ fvex_scan_intent
 (n)
 integer *n;
 /*
- *        integer function fvex_scan_intent(n)
- *        implicit none
- *        integer n
+ *      integer function fvex_scan_intent(n)
+ *      implicit none
+ *      integer n
  *
- * Returns an intent from a scan using the
- *    get_scan_intent() routine.
+ * This routine can be used to retrieve the n-th intent statement in a scan
+ * block found by fget_scan(),  fget_scan_station(), or
+ * fget_scan_data_transfer().
  *
- * input:
- *   integer n                - source parameter to return
+ * The fields in the intent statement can be accessed using fvex_field() and
+ * fvex_units().
  *
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -6 = n out of range
+ * Input:
+ *  integer n                - source parameter to return
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * Output:
+ *  integer (return value)   - error code, zero indicates no error
+ *                             -6 = n out of range
  */
 {
   int i;
@@ -1296,22 +1317,23 @@ fvex_scan_pointing_offset
 (n)
 integer *n;
 /*
- *        integer function fvex_scan_pointing_offset(n)
- *        implicit none
- *        integer n
+ *      integer function fvex_scan_pointing_offset(n)
+ *      implicit none
+ *      integer n
  *
- * Returns a pointing_ofset from a scan using the
- *    get_scan_pointing_offset() routine.
+ * This routine can be used to retrieve the n-th pointing_offset statement in
+ * a scan block found by fget_scan(), fget_scan_station(), or
+ * fget_scan_data_transfer().
  *
- * input:
- *   integer n                - source parameter to return
+ * The fields in the pointing_offset statement can be accessed using
+ * fvex_field() and fvex_units().
  *
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -6 = n out of range
+ * Input:
+ *  integer n                - source parameter to return
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * Output:
+ *  integer (return value)   - error code, zero indicates no error
+ *                             -6 = n out of range
  */
 {
   int i;
@@ -1341,22 +1363,23 @@ fvex_scan_source2
 (n)
 integer *n;
 /*
- *        integer function fvex_scan_source2(n)
- *        implicit none
- *        integer n
+ *      integer function fvex_scan_source2(n)
+ *      implicit none
+ *      integer n
  *
- * Returns a source from a scan using the
- *    get_scan_source2() routine.
+ * This routine can be used to retrieve the n-th source statement in a scan
+ * block found by fget_scan(), fget_scan_station(), or
+ * fget_scan_data_transfer().
  *
- * input:
- *   integer n                - source parameter to return
+ * The fields in the source statement can be accessed using fvex_field() and
+ * fvex_units().
  *
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -6 = n out of range
+ * Input:
+ *  integer n                - source parameter to return
  *
- * When this routine does not return an error, the fields can be accessed
- *   using fvex_field.
+ * Output:
+ *  integer (return value)   - error code, zero indicates no error
+ *                             -6 = n out of range
  */
 {
   int i;
@@ -1388,28 +1411,29 @@ integer *n;
 char **src;
 integer *src_len;
 /*
- *        integer function fvex_scan_source(n,ptr_ch(src),len(src))
- *        implicit none
- *        integer n
- *        character*(*) src
+ *      integer function fvex_scan_source(n,ptr_ch(src),len(src))
+ *      implicit none
+ *      integer n
+ *      character*(*) src
  *
- * Returns a source from a scan located using the
- *    get_scan_station_lowl() routine.
+ * DEPRECATED: Use fvex_scan_source2 instead.
  *
- * input:
- *   integer n                - source field to return
+ * This routine can be used to retrieve the n-th source statement in a scan
+ * block found by fget_scan(), fget_scan_station(), or
+ * fget_scan_data_transfer().
  *
- * output:
- *   character*(*) src        - returned field, use fvex_len to get useful
- *                              length
- *                              should be at least 1 character larger than
- *                              longest possible value to hold null
- *                              termination
+ * Input:
+ *  integer n                - source field to return
  *
- * output:
- *   integer (return value)    - error code, zero indicates no error
- *                               -4 = source did not fit in src variable
- *                               -6 = n out of range
+ * Output:
+ *  character*(*) src        - returned field, use fvex_len() to get useful
+ *                             length
+ *                             should be at least 1 character larger than
+ *                             longest possible value to hold zero
+ *                             termination
+ *  integer (return value)   - error code, zero indicates no error
+ *                             -4 = source did not fit in src variable
+ *                             -6 = n out of range
  */
 {
   int i, ierr;
@@ -1444,21 +1468,21 @@ fvex_double
 char **field, **units;
 doublereal *double__;
 /*
- *        integer function fvex_double(ptr_ch(field),ptr_ch(units),double)
- *        implicit none
- *        character*(*) field,units
- *        double precision double
+ *      integer function fvex_double(ptr_ch(field),ptr_ch(units),double)
+ *      implicit none
+ *      character*(*) field,units
+ *      double precision double
  *
- * Will convert the ASCII representation of a number in field to
- * MKS units according to the units specified in units.
+ * Will convert the ASCII representation of a number in field to MKS units
+ * according to the units specified in units.
  *
- * input:
- *   character*(*) field      - vex fields to be examined, zero terminated
- *   character*(*) units      - units to used in conversion, zero terminated
+ * Input:
+ *  character*(*) field       - vex fields to be examined, zero terminated
+ *  character*(*) units       - units to used in conversion, zero terminated
  *
- * output:
- *   double precision double   - converted value
- *   integer (return value)    - error code, zero indicates no error
+ * Output:
+ *  double precision double   - converted value
+ *  integer (return value)    - error code, zero indicates no error
  *                              -7 = field was not a valid number
  *                              -8 = units contained unknown units
  */
@@ -1625,21 +1649,20 @@ fvex_int
 char **field;
 integer *int__;
 /*
- *        integer function fvex_int(ptr_ch(field),int)
- *        implicit none
- *        character*(*) field
- *        integer int
+ *      integer function fvex_int(ptr_ch(field),int)
+ *      implicit none
+ *      character*(*) field
+ *      integer int
  *
  * Will convert the ASCII representation of a number into int.
  *
- * input:
- *   character*(*) field      - vex fields to be examined, zero terminated
+ * Input:
+ *  character*(*) field      - vex fields to be examined, zero terminated
  *
- *
- * output:
- *   integer int               - converted value
- *   integer (return value)    - error code, zero indicates no error
- *                               -7 = field was not a valid int
+ * Output:
+ *  integer int              - converted value
+ *  integer (return value)   - error code, zero indicates no error
+ *                             -7 = field was not a valid int
  */
 {
   if(1!=sscanf(*field,"%ld",int__))
@@ -1661,27 +1684,27 @@ char **field;
 integer *iarray;
 doublereal *seconds;
 /*
- *        integer function fvex_date(ptr_chr(field),iarray,seconds)
- *        implicit none
- *        character*(*) field
- *        integer iarray(4)
- *        double precision seconds
+ *      integer function fvex_date(ptr_chr(field),iarray,seconds)
+ *      implicit none
+ *      character*(*) field
+ *      integer iarray(4)
+ *      double precision seconds
  *
  * Will convert the ASCII representation of a date field to an integer array
  * and double precision variable.
  *
- * input:
- *   character*(*) field       - field to be converted, zero terminated
+ * Input:
+ *  character*(*) field       - field to be converted, zero terminated
  *
- * output:
- *   integer iarray(4)         - year,day of year,hour,and minutes
- *           iarray(1)           year
- *           iarray(2)           day of year
- *           iarray(3)           hour
- *           iarray(4)           minutes
- *   double precision seconds  - seconds portion of date
- *   integer (return value)    - error code, zero indicates no error
- *                               -7 = error in date field
+ * Output:
+ *  integer iarray(4)         - year,day of year,hour,and minutes
+ *          iarray(1)           year
+ *          iarray(2)           day of year
+ *          iarray(3)           hour
+ *          iarray(4)           minutes
+ *  double precision seconds  - seconds portion of date
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -7 = error in date field
  */
 {
   int count;
@@ -1714,20 +1737,20 @@ fvex_ra
 char **field;
 doublereal *ra;
 /*
- *        integer function fvex_ra(field,ra)
- *        implicit none
- *        character*(*) field
- *        double precision ra
+ *      integer function fvex_ra(field,ra)
+ *      implicit none
+ *      character*(*) field
+ *      double precision ra
  *
- * Convert a Right Ascenion field to radians
+ * Convert a Right Ascension field to radians
  *
- * input:
- *   character*(*) field       - field to be converted, null terminated
+ * Input:
+ *  character*(*) field       - field to be converted, zero terminated
  *
- * output:
- *   double precision ra       - Right Ascenion value in radians
- *   integer (return value)    - error code, zero indicates no error
- *                               -7 = - error in ra field
+ * Output:
+ *  double precision ra       - Right Ascension value in radians
+ *  integer (return value)    - error code, zero indicates no error
+ *                              -7 = - error in ra field
  */
 {
   int hour, min;
@@ -1751,24 +1774,19 @@ fvex_dec
 char **field;
 doublereal *dec;
 /*
- *        integer function fvex_dec(ptr_ch(field),dec)
- *        implicit none
- *        character*(*) field
- *        double precision dec
+ *      integer function fvex_dec(ptr_ch(field),dec)
+ *      implicit none
+ *      character*(*) field
+ *      double precision dec
  *
- * Convert a Decliniation field to radians
+ * Convert a Declination field to radians.
  *
- * input:
+ * Input:
  *   character*(*) field       - field to be converted, zero terminated
  *
- * output:
+ * Output:
  *   double precision dec      - Declination value in radians
  *   integer (return value)    - error code, zero indicates no error
- *                               otherwise errors determined by bits, if
- *                               bit is on the error occurred, bits are
- *                               numbered from 0 and correspond to
- *                               the value of the corresponding power of 2,
- *                               e.g. bit 0 is decimal 1
  *                               -7 = error in dec field
  */
 {
@@ -1799,12 +1817,42 @@ ptr_ch__
 ptr_ch
 #endif
 (char *ptr,ftnlen len)
+/*
+ *      integer function ptr_ch(ptr)
+ *      implicit none
+ *      character*(*) ptr
+ *
+ * Returns pointer, as an integer to character object ptr.
+ *
+ * Input:
+ *  character*(*) ptr         - character object to return the pointer of
+ *
+ * Output:
+ *  integer (return value)    - pointer to object ptr,
+ *                              NOTE: on 64-bit machines this is a 64-bit
+ *                              integer, calling FORTRAN source must use
+ *                              compile option -fdefault-integer-8
+ */
 {
   return ptr;
 }
 /* ----------------------------------------------------------------------- */
 static int
 field_copy(char *field,int field_len,char *ptr)
+/*
+ * Copies string at ptr to string at field. Only called internally from C
+ * code.
+ *
+ * Input:
+ *  char* ptr         - string to copy
+ *  int field_len     - size of field
+ *
+ * Output:
+ *  char* field               - copied string that fits inside field_len,
+ *                              zero terminated
+ *  integer (return value)    - error code, zero is no error
+ *                              -1 is field_len too small, field is truncated
+ */
 {
   int clen, len;
 
