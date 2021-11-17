@@ -1,3 +1,4 @@
 *.o
 *.a
 y.tab.h
+*.html

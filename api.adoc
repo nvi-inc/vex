@@ -1,0 +1,220 @@
+//
+// Copyright (c) 2021 NVI, Inc.
+//
+// This file is part of VLBI Field System
+// (see http://github.com/nvi-inc/fs).
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
+= DRAFT VEX parser and writer API description
+E. Himwich
+Version 0.1 - November 2021
+
+:sectnums:
+
+:toc:
+
+== Introduction
+
+This document provides a terse description of the VEX parser and
+writer Application Program Interface (API). Whenever this is a
+non-backward compatible change in the API in a released version of the
+parser, the first field in the version string will be incremented.
+
+Next in this document, the parser API features are listed followed by
+the writer API features. After that the _discouraged_ API features are
+listed; following that, the _deprecated_ features.
+
+== VEX parser API
+
+=== Functions
+
+The functions in the parser API include all those that are externally
+visible in the source files:
+
+* _vex_get.c_ -- C
+* _vexf_get.c_ -- FORTRAN
+
+Additionally for the C language, one function in the _vex_util.c_
+source file is part of the API:
+
+* `vex_field()`
+
+=== C language data structures
+
+The members of the data structures for the primitive statements are
+considered to part of the C language parser API. Note that for some
+parameters that have a single field, there is no data structure, just
+a pointer to the data of that field. However, direct use of the
+parameter data structures, or the pointer, is discouraged.
+
+The memory linked list that stores the contents of a VEX file is part
+of the C language parser API. However, its direct use is even more
+strongly discouraged.
+
+The discouraged direct use of the data structures and the linked list
+can be avoided by using only `get_*()` functions in _vex_get.c_ and/or
+the functions in _vexf_get.c_.
+
+== VEX writer API
+
+The functions in the API include all functions in the source files:
+
+* _vex_put.c_ -- C
+* _vexf_put.c_ -- FORTRAN
+
+== Discouraged API features
+
+Features that are _discouraged_ are ones whose use is acceptable for
+existing code, but should be avoided for new code. The main reason for
+is that avoiding their use will provide a level of abstraction that
+will insulate user code from most internal changes in the parser.
+Ideally we would like to eliminate all discouraged features from the
+API, but at this time that is not practical. All discouraged features
+are part of the C language parser API.
+
+=== Functions
+
+The following functions from _vex_get.c_ are considered discouraged:
+
+* `find_block()`
+* `find_def()`
+* `find_lowl()`
+* `find_next_def()`
+* `find_next_scan()`
+
+These are lower-level functions. It should be possible to restructure
+any use of these functions in terms of the `get_*()` functions in
+_vex_get.c_. However, if this makes access unnecessarily difficult,
+please contact the maintainer.
+
+=== Data structures
+
+Direct use of the members of the data structure for the primitive
+statements is considered discouraged. Not using them will shield user
+code from changes in the data structures. The `vex_field()` function
+from _vex_util.c_ should be used instead.
+
+Direct use of the memory linked list of the VEX file data is
+considered even more strongly discouraged. Avoiding this will shield
+user code from changes in linked list structure. The `get_*()`
+functions in _vex_get.c_ should be used instead. Those functions also
+enforce the context of the VEX data, e.g., which parameters apply to
+which station and mode.
+
+== Deprecated API features
+
+Features that are _deprecated_ are ones whose use should be removed
+and replaced with updated features. Typically, this is because the
+functionality of the deprecated feature is too limited for use with
+VEX2. They still work for VEX1 functionality. The deprecated features
+may be removed some day. The only deprecated features are functions.
+
+=== C language
+
+==== vex_get.c
+
+The following functions from _vex_get.c_ are considered deprecated:
+
+* `get_scan_source()`
+* `get_scan_source_next()`
+
+Use of these functions should be replaced with, respectively:
+
+* `get_scan_source2()`
+* `get_scan_source2_next()`
+
+==== vex_put.c
+
+The following functions from _vex_put.c_ are considered deprecated:
+
+* `create_antenna_motion()`
+* `create_axis_type()`
+* `create_chan_def()`
+* `create_chan_def_states()`
+* `create_clock()`
+* `create_clock_early()`
+* `create_exper_name()`
+* `create_if_def()`
+* `create_pointing_sector()`
+* `create_site_ID()`
+* `create_source()`
+* `create_source_type()`
+* `create_vsn()`
+
+Use of these functions should be replaced with, respectively:
+
+* `create_antenna_motion2()`
+* `create_axis_type2()`
+* `create_chan_def2()`
+* `create_chan_def2_states()`
+* `create_clock_early2()`
+* `create_clock_early2()`
+* `create_exper_name2()`
+* `create_if_def2()`
+* `create_pointing_sector2()`
+* `create_site_ID2()`
+* `create_source2()`
+* `create_source_type2()`
+* `create_vsn2()`
+
+=== FORTRAN
+
+==== vexf_get.c
+
+The following function from _vexf_get.c_ is considered deprecated:
+
+* `fvex_scan_source()`
+
+Use of that function should be replaced with:
+
+* `fget_scan_source2()`
+
+Note the change from `fvex_`...  to `fget_`... The deprecated function
+was inconsistently named.
+
+==== vexf_put.c
+
+The following functions from _vexf_put.c_ are considered deprecated:
+
+* `fcreate_antenna_motion()`
+* `fcreate_axis_type()`
+* `fcreate_chan_def()`
+* `fcreate_chan_def_states()`
+* `fcreate_clock()`
+* `fcreate_clock_early()`
+* `fcreate_exper_name()`
+* `fcreate_if_def()`
+* `fcreate_pointing_sector()`
+* `fcreate_site_ID()`
+* `fcreate_source()`
+* `fcreate_source_type()`
+* `fcreate_vsn()`
+
+Use of these functions should be replaced with, respectively:
+
+* `fcreate_antenna_motion2()`
+* `fcreate_axis_type2()`
+* `fcreate_chan_def2()`
+* `fcreate_chan_def2_states()`
+* `fcreate_clock_early2()`
+* `fcreate_clock_early2()`
+* `fcreate_exper_name2()`
+* `fcreate_if_def2()`
+* `fcreate_pointing_sector2()`
+* `fcreate_site_ID2()`
+* `fcreate_source2()`
+* `fcreate_source_type2()`
+* `fcreate_vsn2()`
