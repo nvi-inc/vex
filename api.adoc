@@ -20,74 +20,217 @@
 
 = DRAFT VEX parser and writer API description
 E. Himwich
-Version 0.1 - November 2021
+Version 0.2 - November 2021
 
 :sectnums:
-
 :toc:
 
 == Introduction
 
 This document provides a terse description of the VEX parser and
-writer Application Program Interface (API). Whenever this is a
+writer Application Program Interface (API). Whenever there is a
 non-backward compatible change in the API in a released version of the
-parser, the first field in the version string will be incremented.
+parser or writer, the first field in the version string will be
+incremented.
 
-Next in this document, the parser API features are listed followed by
-the writer API features. After that the _discouraged_ API features are
-listed; following that, the _deprecated_ features.
+The remaining sections of this document list the API features, a
+history of non-backward compatible API changes, _discouraged_
+features, and lastly _deprecated_ features.
 
-== VEX parser API
+== API
 
-=== Functions
+=== VEX parser
+
+The parser API includes functions and other programming language
+syntactic elements.
+
+==== Functions
 
 The functions in the parser API include all those that are externally
 visible in the source files:
 
-* _vex_get.c_ -- C
-* _vexf_get.c_ -- FORTRAN
+* _vex_get.c_
+
++
+
+This `get_*()` functions in this file make up the bulk of the C
+language parser interface. Examples of calls to these functions can be
+found in the _vexf_get.c_ source file. The `find_*()` functions in
+this file are also part of the API, but their use is discouraged.
+
+
+* _vexf_get.c_
+
++
+
+The externally visible functions in this file make up the FORTRAN
+parser interface. The functions have explanations of their calling
+sequence in their source. The `fget_*()` functions  are similar to the
+corresponding `get_*()` C language interface functions. Many of the
+`fvex_*()` functions, for example `fvex_ra()`, may also be useful in
+the C language.
+
 
 Additionally for the C language, one function in the _vex_util.c_
 source file is part of the API:
 
 * `vex_field()`
 
-=== C language data structures
+==== C language syntactic elements
 
-The members of the data structures for the primitive statements are
-considered to part of the C language parser API. Note that for some
-parameters that have a single field, there is no data structure, just
-a pointer to the data of that field. However, direct use of the
-parameter data structures, or the pointer, is discouraged.
+Beginning with _v2.0.0_ (released in FS _9.5.0_, September 2001), the
+following C language syntactic elements became de facto parts of the
+API:
 
-The memory linked list that stores the contents of a VEX file is part
-of the C language parser API. However, its direct use is even more
-strongly discouraged.
+* Symbolic names for the VEX parameter tokens (e.g., `T_CHAN_DEF` for
+`chan_def`) and the block names (e.g., `B_FREQ` for `$FREQ`).
 
-The discouraged direct use of the data structures and the linked list
-can be avoided by using only `get_*()` functions in _vex_get.c_ and/or
-the functions in _vexf_get.c_.
+* Data structures for the VEX primitive statements. For some
+parameters that have only a single field, there is no explicit data
+structure, just a pointer to the data of that field. Direct use of
+these data structures/pointers is discouraged.
 
-== VEX writer API
+* Memory linked lists that store the contents of a VEX file. Direct
+use of these lists is _strongly_ discouraged.
 
-The functions in the API include all functions in the source files:
+The direct use of these discouraged syntactic elements can be avoided
+by using only the `get_*()` functions from _vex_get.c_ along with
+`vex_field()` from _vex_util.c_. Instead, or in addition, the
+`fget_*()` functions from _vexf_get.c_ can be used. The `get_*()` and
+`fget_*()` functions also enforce the context of the VEX data, e.g.,
+which VEX parameters apply to which station and mode or globally.
 
-* _vex_put.c_ -- C
+NOTE: Prior to _v2.0.0_, the last non-backward compatible changes in
+any of these syntactic elements was in _v.1.2.0_, released in FS
+_9.3.6_, January, 1997. That update included the changes for VEX
+_1.5_.
+
+==== FORTRAN syntactic elements
+
+Beginning with _v2.0.0_ (released in FS _9.5.0_, September 2001), the
+character string representations of the symbolic names for the VEX
+parameter tokens (e.g., `chan_def` for `T_CHAN_DEF`) and block name
+tokens (e.g., `FREQ` for `B_FREQ`) became de facto parts of the API.
+
+NOTE: Prior to _v2.0.0_, the last non-backward compatible changes in
+any of these syntactic elements was in _v.1.2.0_, released in FS
+_9.3.6_, January, 1997. That update included the changes for VEX
+_1.5_.
+
+=== VEX writer
+
+The functions in the writer API include all functions in the source
+files:
+
+* _vex_put.c_ -- C language
+
++
+
+These are the `create_*()` functions.
+
 * _vexf_put.c_ -- FORTRAN
 
-== Discouraged API features
++
 
-Features that are _discouraged_ are ones whose use is acceptable for
-existing code, but should be avoided for new code. The main reason for
-is that avoiding their use will provide a level of abstraction that
-will insulate user code from most internal changes in the parser.
-Ideally we would like to eliminate all discouraged features from the
-API, but at this time that is not practical. All discouraged features
-are part of the C language parser API.
+These are the `fcreate_*()` functions.
+
+== Non-backward compatible API changes
+
+=== v3
+
+This sub-section covers the non-backward compatible feature changes in
+the _v3_ API, as compared to _v2_. That transition corresponds to the
+update to the VEX1-and-VEX2 capable parser from the VEX1-only capable
+parser. The latter having been distributed in FS version _10.0.0_ and
+earlier releases, available at https://github.com/nvi-inc/fs (some
+subsequent FS releases may also contain the VEX1-only parser). All the
+changes were only to direct use of the VEX parameter data
+structures/pointers.
+
+NOTE: Being backward compatible does not imply being able to support
+VEX2. Please see the <<Deprecated features>> section below for details
+on the changes that are needed to support VEX2 usage of VEX parameters
+that existed in VEX1.
+
+==== VEX parameter data structure changes
+
+For all but two of the changes, a pointer to the VEX parameter data
+was replaced with a pointer to a data structure. The two that are
+different are `source_type` and `VEX_rev`.
+
+The data structures for the following VEX parameters changed:
+
+* `exper_name`
+
++
+
+The storage was changed from a string value to the `exper_name`
+structure.
+
+* `site_id`
+
++
+
+The storage was changed from a string value to the `site_id`
+structure.
+
+* `source`
+
++
+
+The storage was changed from a string value to the `source` structure.
+
+* `source_type`
+
++
+
+The storage was changed from a string value list to the `source_type`
+structure.
+
+* `VEX_rev`
+
++
+
+The storage was changed from a `dvalue` structure to a string value.
+
+=== v2
+
+This sub-section covers the non-backward compatible features in the
+_v2_ API, as compared to _v1.2.2_. The _v2.0.0_ version of the parser
+was released in FS _9.5.0_, September 2001. All the changes were to
+functions.
+
+==== Function changes
+
+* _vex_get.c_
+
++
+
+The calling sequence for the following functions changed:
+
+** `get_scan_station()`
+** `get_scan_station_next()`
+
+* _vexf.c_  (now _vexf_get.c_)
+
++
+
+The calling sequence for the following function changed:
+
+** `fget_scan_station()`
+
+== Discouraged features
+
+_Discouraged_ features are acceptable for existing code, but should
+not be used in new code. Avoiding their use will insulate user code
+from most internal changes in the parser. Ideally all discouraged
+features should be eliminated from the API, but at this time that is
+not practical. Currently, all of the discouraged features are part of
+the C language parser API.
 
 === Functions
 
-The following functions from _vex_get.c_ are considered discouraged:
+The following functions from _vex_get.c_ are discouraged:
 
 * `find_block()`
 * `find_def()`
@@ -96,49 +239,54 @@ The following functions from _vex_get.c_ are considered discouraged:
 * `find_next_scan()`
 
 These are lower-level functions. It should be possible to restructure
-any use of these functions in terms of the `get_*()` functions in
-_vex_get.c_. However, if this makes access unnecessarily difficult,
-please contact the maintainer.
+any use of them in terms of the `get_*()` functions in _vex_get.c_.
+However, if this prevents some information from being accessed
+properly, please contact the maintainer.
 
 === Data structures
 
-Direct use of the members of the data structure for the primitive
-statements is considered discouraged. Not using them will shield user
-code from changes in the data structures. The `vex_field()` function
-from _vex_util.c_ should be used instead.
+Direct use of the data structures for the VEX primitive statements is
+discouraged. Not using them will shield user code from changes in the
+data structures. The `vex_field()` function from _vex_util.c_ should
+be used instead.
 
 Direct use of the memory linked list of the VEX file data is
-considered even more strongly discouraged. Avoiding this will shield
-user code from changes in linked list structure. The `get_*()`
-functions in _vex_get.c_ should be used instead. Those functions also
-enforce the context of the VEX data, e.g., which parameters apply to
-which station and mode.
+_strongly_ discouraged. Avoiding this will shield user code from
+changes in linked list structure. The `get_*()` functions in
+_vex_get.c_ should be used instead.
 
-== Deprecated API features
+== Deprecated features
 
-Features that are _deprecated_ are ones whose use should be removed
-and replaced with updated features. Typically, this is because the
-functionality of the deprecated feature is too limited for use with
-VEX2. They still work for VEX1 functionality. The deprecated features
-may be removed some day. The only deprecated features are functions.
+_Deprecated_ features should be removed and replaced with updated
+features. Typically, this is needed because the functionality of the
+deprecated feature is too limited for use with VEX2. They will still
+work for VEX1 functionality. The deprecated features may be removed
+some day. Currently, the only deprecated features are functions.
+
+NOTE: The replacement functions are not plug replacements for the
+deprecated ones. The returned values and/or calling sequences may have
+changed.
 
 === C language
 
 ==== vex_get.c
 
-The following functions from _vex_get.c_ are considered deprecated:
+The following functions from _vex_get.c_ are deprecated:
 
 * `get_scan_source()`
 * `get_scan_source_next()`
 
-Use of these functions should be replaced with, respectively:
+Use of those functions should be replaced with, respectively:
+
+IMPORTANT: The returned values of the replacement functions are
+different.
 
 * `get_scan_source2()`
 * `get_scan_source2_next()`
 
 ==== vex_put.c
 
-The following functions from _vex_put.c_ are considered deprecated:
+The following functions from _vex_put.c_ are deprecated:
 
 * `create_antenna_motion()`
 * `create_axis_type()`
@@ -154,7 +302,10 @@ The following functions from _vex_put.c_ are considered deprecated:
 * `create_source_type()`
 * `create_vsn()`
 
-Use of these functions should be replaced with, respectively:
+Use of those functions should be replaced with, respectively:
+
+IMPORTANT: The calling sequences of the replacement functions are
+different.
 
 * `create_antenna_motion2()`
 * `create_axis_type2()`
@@ -174,20 +325,23 @@ Use of these functions should be replaced with, respectively:
 
 ==== vexf_get.c
 
-The following function from _vexf_get.c_ is considered deprecated:
+The following function from _vexf_get.c_ is deprecated:
 
 * `fvex_scan_source()`
 
 Use of that function should be replaced with:
 
-* `fget_scan_source2()`
+IMPORTANT: The calling sequence of the replacement function is
+different.
 
-Note the change from `fvex_`...  to `fget_`... The deprecated function
-was inconsistently named.
+CAUTION: There is a change from `fvex_...()`  to `fget_...()`. The
+deprecated function was inconsistently named.
+
+* `fget_scan_source2()`
 
 ==== vexf_put.c
 
-The following functions from _vexf_put.c_ are considered deprecated:
+The following functions from _vexf_put.c_ are deprecated:
 
 * `fcreate_antenna_motion()`
 * `fcreate_axis_type()`
@@ -203,7 +357,10 @@ The following functions from _vexf_put.c_ are considered deprecated:
 * `fcreate_source_type()`
 * `fcreate_vsn()`
 
-Use of these functions should be replaced with, respectively:
+Use of those functions should be replaced with, respectively:
+
+IMPORTANT: The calling sequences of the replacement functions are
+different.
 
 * `fcreate_antenna_motion2()`
 * `fcreate_axis_type2()`
