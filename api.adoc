@@ -20,7 +20,7 @@
 
 = DRAFT VEX parser and writer API description
 E. Himwich
-Version 0.2 - November 2021
+Version 0.3 - November 2021
 
 :sectnums:
 :toc:
@@ -65,7 +65,7 @@ this file are also part of the API, but their use is discouraged.
 
 The externally visible functions in this file make up the FORTRAN
 parser interface. The functions have explanations of their calling
-sequence in their source. The `fget_*()` functions  are similar to the
+sequences in their source. The `fget_*()` functions  are similar to the
 corresponding `get_*()` C language interface functions. Many of the
 `fvex_*()` functions, for example `fvex_ra()`, may also be useful in
 the C language.
@@ -75,6 +75,10 @@ Additionally for the C language, one function in the _vex_util.c_
 source file is part of the API:
 
 * `vex_field()`
+
++
+
+A synopsis of its calling sequence is included inline in the source.
 
 ==== C language syntactic elements
 
@@ -104,6 +108,12 @@ NOTE: Prior to _v2.0.0_, the last non-backward compatible changes in
 any of these syntactic elements was in _v.1.2.0_, released in FS
 _9.3.6_, January, 1997. That update included the changes for VEX
 _1.5_.
+
+==== C language examples
+
+Some examples of use of the parser in the C language are included in
+the _examples_ subdirectory. There aren't many of them at this time,
+but more may be added.
 
 ==== FORTRAN syntactic elements
 
@@ -167,7 +177,7 @@ The data structures for the following VEX parameters changed:
 The storage was changed from a string value to the `exper_name`
 structure.
 
-* `site_id`
+* `site_ID`
 
 +
 
@@ -240,8 +250,8 @@ The following functions from _vex_get.c_ are discouraged:
 
 These are lower-level functions. It should be possible to restructure
 any use of them in terms of the `get_*()` functions in _vex_get.c_.
-However, if this prevents some information from being accessed
-properly, please contact the maintainer.
+However, if this appears to prevent some information from being
+accessed properly, please contact the maintainer.
 
 === Data structures
 
@@ -264,7 +274,7 @@ work for VEX1 functionality. The deprecated features may be removed
 some day. Currently, the only deprecated features are functions.
 
 NOTE: The replacement functions are not plug replacements for the
-deprecated ones. The returned values and/or calling sequences may have
+deprecated ones. The returned values and/or calling sequences have
 changed.
 
 === C language
