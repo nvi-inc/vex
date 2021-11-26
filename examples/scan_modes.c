@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
 
     keyword=get_scan_mode(lowls);
 
-/* use get_all_lowl()/_next_lowl() to assure access to all
- * primitives defined for a station/mode, including those
- * set globally and by station, as well as set by the mode.
+/* use get_all_lowl()/_next() to assure access to all primitives
+ * defined for a station/mode, including those set globally and by
+ * station, as well as set by the mode.
  */
 
 /* output result */
