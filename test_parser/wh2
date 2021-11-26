@@ -1593,6 +1593,9 @@ $SITE; *site parameters
 *
   def VLBA-FD;
     ref <external_file>:$SITE = VLBA-FD;
+    site_ID = FD : f; *standard 2-char identifier & ad hoc 1-char
+*                    x                   y                  z
+    site_position = -1324009432.82 mm : -5332181959.63 mm : 3231962346.07 mm;
   enddef;
 *
   def HAYSTACK;
@@ -1600,7 +1603,10 @@ $SITE; *site parameters
   enddef;
 *
   def JODRELL_MK2;
+    site_ID = JB : j; *standard 2-char identifier & ad hoc 1-char
     ref <external_file>:$SITE = JODRELL_MK2;
+*                   x                 y               z
+    site_position = 3822.84676000 km : -153.80228000 km : 5086.28590000 km;
   enddef;
 *
   def VSOP; *satellite
