@@ -488,6 +488,9 @@ char *quote()
 	lines++;
 	inch=input();
 	break;
+      case 'a':
+	inch='\a';
+	break;
       case 'b':
 	inch='\b';
 	break;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 NVI, Inc.
+ * Copyright (c) 2020-2021, 2025 NVI, Inc.
  *
  * This file is part of VLBI Field System
  * (see http://github.com/nvi-inc/fs).
@@ -289,6 +289,9 @@ void print_svalue(char *svalue)
     } else {
 	fprintf(fp, "\\");
       switch (*ptr) {
+      case '\a':
+	outch='a';
+	break;
       case '\b':
 	outch='b';
 	break;
