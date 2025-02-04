@@ -1,6 +1,6 @@
 %{
 /*
- * Copyright (c) 2020-2021 NVI, Inc.
+ * Copyright (c) 2020-2021, 2025 NVI, Inc.
  *
  * This file is part of VLBI Field System
  * (see http://github.com/nvi-inc/fs).
@@ -483,7 +483,6 @@ char *quote()
   while(inch != EOF && inch != '"' && inch != '\n') {
     if(inch=='\\') {
       inch=input();
-      ch=0;
       switch (inch) {
       case '\n':
 	lines++;
@@ -508,8 +507,9 @@ char *quote()
 	inch='\r';
 	break;
       case 'X':
-	ch='X';
       case 'x':
+	/* save which character we actually saw */
+	ch=inch;
 	inch=input();
 	if(isxdigit(inch)){
 	  temp=hextoint(toupper(inch));
@@ -522,11 +522,8 @@ char *quote()
 	  inch=temp;
 	} else {
 	  unput(inch);
-	  if (ch=='X') {
-	    inch='X';
-	  } else {
-	    inch='x';
-	  }
+	  /* wasn't hex number, put back the character we saw */
+	  inch=ch;
 	}
 	break;
       default:
