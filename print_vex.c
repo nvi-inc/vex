@@ -314,7 +314,7 @@ void print_svalue(char *svalue)
 	outch='"';
 	break;
       default:
-	fprintf(fp, "x%02x",*ptr);
+	fprintf(fp, "x%02x",*ptr & 0xFF);
       outch='\0';
       }
       if(outch!='\0') {
